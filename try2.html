@@ -1,0 +1,71 @@
+// Render students table with separate columns for each mark type
+function renderStudentsTable() {
+    studentsTableBody.innerHTML = '';
+
+    if (students.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td colspan="9" style="text-align: center; color: var(--gray);">
+                No student records found. Add some students to get started.
+            </td>
+        `;
+        studentsTableBody.appendChild(row);
+        return;
+    }
+
+    students.forEach((student, index) => {
+        const row = document.createElement('tr');
+
+        // Helper function to create mark cell with color coding
+        const createMarkCell = (mark) => {
+            const cell = document.createElement('td');
+            if (mark) {
+                const numMark = parseInt(mark);
+                cell.textContent = numMark;
+                cell.className = numMark >= 80 ? 'text-success' : 
+                                 numMark >= 50 ? 'text-warning' : 'text-danger';
+            } else {
+                cell.textContent = '-';
+                cell.className = 'text-muted';
+            }
+            return cell;
+        };
+
+        // Create cells for basic info
+        const rollNoCell = document.createElement('td');
+        rollNoCell.textContent = student.rollNo;
+        row.appendChild(rollNoCell);
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = student.name;
+        row.appendChild(nameCell);
+
+        const semesterCell = document.createElement('td');
+        semesterCell.textContent = student.semester ? student.semester + ' Semester' : '-';
+        row.appendChild(semesterCell);
+
+        const houseTestCell = document.createElement('td');
+        houseTestCell.textContent = student.houseTest ? student.houseTest.replace('house', 'House Test ') : '-';
+        row.appendChild(houseTestCell);
+
+        // Add mark cells
+        row.appendChild(createMarkCell(student.theoryMarks));
+        row.appendChild(createMarkCell(student.practicalMarks));
+        row.appendChild(createMarkCell(student.assignmentMarks));
+        row.appendChild(createMarkCell(student.seminarMarks));
+
+        // Actions cell
+        const actionsCell = document.createElement('td');
+        actionsCell.innerHTML = `
+            <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        `;
+        row.appendChild(actionsCell);
+
+        studentsTableBody.appendChild(row);
+    });
+}

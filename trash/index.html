@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Attendance & Marks System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transform-style: preserve-3d;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+            transform: translateZ(50px);
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 300px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 35px 60px rgba(0, 150, 255, 0.4);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card-icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            color: #00a8ff;
+            transform: translateZ(30px);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            transform: translateZ(40px);
+        }
+
+        .card-desc {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.8;
+            transform: translateZ(20px);
+        }
+
+        .card-btn {
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #00a8ff, #0097e6);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translateZ(50px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.4);
+        }
+
+        .card-btn a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .card-btn:hover {
+            transform: translateZ(50px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 168, 255, 0.6);
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background: rgba(30, 40, 60, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform-style: preserve-3d;
+            transform: rotateX(15deg);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal.active .modal-content {
+            transform: rotateX(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #00a8ff;
+            transition: transform 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            transform: translateZ(20px);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00a8ff;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #00a8ff, #0097e6);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .card {
+                width: 90%;
+                height: auto;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Academic Management System</h1>
+        
+        
+        <div class="card-container">
+            <div class="card" id="attendanceCard">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title">Attendance Management</h2>
+               
+                <p class="card-desc">Track and manage student attendance records with our intuitive system</p>
+                <button class="card-btn"> <a href="studentpro.html">Open Panal</a></button>
+            </div>
+            
+            <div class="card" id="marksCard">
+                <div class="card-icon">📝</div>
+                <h2 class="card-title">Sessional Marks</h2>
+                <p class="card-desc">Record and analyze student performance with detailed marks tracking</p>
+                <button class="card-btn"> <a href="/sessional.html">Open Panal</a></button>
+            </div>
+        </div>
+        
+        <!-- Floating background elements -->
+        <div class="floating-elements">
+            <div class="floating-element" style="width: 100px; height: 100px; top: 20%; left: 10%;"></div>
+            <div class="floating-element" style="width: 150px; height: 150px; top: 60%; left: 80%; animation-delay: -5s;"></div>
+            <div class="floating-element" style="width: 200px; height: 200px; top: 80%; left: 30%; animation-delay: -8s;"></div>
+            <div class="floating-element" style="width: 80px; height: 80px; top: 30%; left: 70%; animation-delay: -3s;"></div>
+        </div>
+    </div>
+  <script>
+        // Create floating elements dynamically
+        const floatingContainer = document.querySelector('.floating-elements');
+        for (let i = 0; i < 10; i++) {
+            const element = document.createElement('div');
+            element.classList.add('floating-element');
+            
+            const size = Math.random() * 100 + 50;
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            const delay = Math.random() * -15;
+            const duration = Math.random() * 10 + 10;
+            
+            element.style.width = `${size}px`;
+            element.style.height = `${size}px`;
+            element.style.top = `${posY}%`;
+            element.style.left = `${posX}%`;
+            element.style.animationDelay = `${delay}s`;
+            element.style.animationDuration = `${duration}s`;
+            
+            floatingContainer.appendChild(element);
+        }
+        
+       
+        
+        
+        attendanceCard.addEventListener('click', () => {
+            attendanceModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        marksCard.addEventListener('click', () => {
+            marksModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                attendanceModal.classList.remove('active');
+                marksModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === attendanceModal) {
+                attendanceModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            if (e.target === marksModal) {
+                marksModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+       
+      
+        
+        // 3D card tilt effect
+        const cards = document.querySelectorAll('.card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                card.style.transform = `translateY(-10px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) rotateY(0) rotateX(0)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,3404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --secondary: #00b894;
+            --secondary-light: #55efc4;
+            --accent: #fd79a8;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --light: #f5f6fa;
+            --dark: #2d3436;
+            --radius: 10px;
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #dfe6e9 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+      
+            margin: 0 auto;
+            padding: 1.7px  ;
+        }
+
+
+
+        @keyframes fadeInUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--warning));
+            animation: rainbow 8s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .auth-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: var(--radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.6s;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #ff7675);
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.3);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 8px 25px rgba(214, 48, 49, 0.4);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: scaleIn 0.5s forwards 0.2s;
+        }
+
+        @keyframes scaleIn {
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .dashboard-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--warning));
+            animation: rainbow 8s linear infinite;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--warning));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+            transition: var(--transition);
+        }
+
+        .user-avatar:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .dashboard-body {
+            padding: 30px;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 25px;
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f2f6;
+            transition: var(--transition);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .checkbox-cell {
+            text-align: center;
+        }
+
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #dfe6e9;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            box-shadow: 0 0 10px rgba(0, 184, 148, 0.3);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-weight: bold;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            border-bottom: 2px solid #f1f2f6;
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: #636e72;
+            transition: var(--transition);
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            color: var(--primary);
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            animation: rainbow 8s linear infinite;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            animation: rainbow 8s linear infinite;
+        }
+
+        .stat-card h3 {
+            color: #636e72;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-card p {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Compact Analytics */
+        .compact-analytics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: 300px;
+        }
+
+        /* Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        .spinner.active {
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(150%);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            border-left: 4px solid var(--primary);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left-color: var(--secondary);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+
+        .toast-icon {
+            font-size: 24px;
+        }
+
+        .toast.success .toast-icon {
+            color: var(--secondary);
+        }
+
+        .toast.error .toast-icon {
+            color: var(--danger);
+        }
+
+        .toast.warning .toast-icon {
+            color: var(--warning);
+        }
+/* Mobile First Styles (applies to all screens) */
+.container {
+    width: 100%;
+    padding: 10px;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+        padding: 15px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .compact-analytics {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .compact-analytics {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* Mobile-specific adjustments (applies to screens smaller than 768px) */
+@media (max-width: 767.98px) {
+    /* General adjustments */
+    body {
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 8px;
+    }
+    
+    /* Header adjustments */
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .user-info {
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    /* Navigation tabs */
+    .nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .nav-tab {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    
+    /* Stats cards */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .stat-card {
+        padding: 15px;
+    }
+    
+    .stat-card h3 {
+        font-size: 12px;
+    }
+    
+    .stat-card p {
+        font-size: 18px;
+    }
+    
+    /* Forms and inputs */
+    .auth-body {
+        padding: 20px 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    input, select {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+        width: 100%;
+    }
+    
+    /* Tables */
+    .data-table {
+        font-size: 13px;
+    }
+    
+    .data-table th, 
+    .data-table td {
+        padding: 8px 10px;
+    }
+    
+    /* Filter controls */
+    .filter-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .filter-controls select, 
+    .filter-controls input {
+        min-width: 100%;
+        width: 100%;
+    }
+    
+    /* Action buttons */
+    .action-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+    }
+    
+    /* Toast notifications */
+    .toast {
+        width: 90%;
+        right: 5%;
+        left: 5%;
+        max-width: none;
+    }
+}
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+    /* Even more compact styles */
+    .auth-header {
+        padding: 15px;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .dashboard-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    /* Single column layout for everything */
+    .compact-analytics {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Hide less important elements */
+    .desktop-only {
+        display: none !important;
+    }
+    
+    /* Make sure tables are scrollable */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Very small devices (phones under 360px) */
+@media (max-width: 359.98px) {
+    /* Tiny screen optimizations */
+    body {
+        font-size: 13px;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .nav-tab {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+    
+    .btn {
+        padding: 10px 15px;
+    }
+    
+    /* Stack all elements vertically */
+    .filter-controls,
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    /* Reduce padding everywhere */
+    .dashboard-body,
+    .auth-body,
+    .tab-content {
+        padding: 10px;
+    }
+}
+
+/* Orientation-specific adjustments */
+@media screen and (max-width: 767.98px) and (orientation: landscape) {
+    /* Landscape mobile optimizations */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .nav-tabs {
+        padding-bottom: 0;
+    }
+    
+    .dashboard-header {
+        padding: 10px 15px;
+    }
+    
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* High-density displays */
+@media 
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (min-resolution: 192dpi) {
+    /* Make sure borders and thin elements look sharp */
+    .nav-tab.active::after,
+    .dashboard-header::after,
+    .auth-header::after {
+        height: 2px;
+    }
+    
+    input, select {
+        border-width: 1px;
+    }
+}
+
+/* Print styles */
+@media print {
+    /* Hide non-essential elements when printing */
+    .dashboard-header,
+    .nav-tabs,
+    .action-buttons,
+    .search-box {
+        display: none !important;
+    }
+    
+    /* Make tables print well */
+    .data-table {
+        width: 100%;
+        font-size: 12px;
+    }
+    
+    /* Ensure good contrast */
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .stat-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+}
+/* Mobile-Only CSS (280px - 500px) */
+@media (min-width: 280px) and (max-width: 500px) {
+    /* Base adjustments */
+    body {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    .container {
+        padding: 8px;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* Header optimizations */
+    .dashboard-header, .auth-header {
+        padding: 12px;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+    
+    .user-info {
+        justify-content: center;
+        margin-top: 8px;
+    }
+    
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+    
+    /* Navigation */
+    .nav-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    
+    .nav-tab {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    
+    /* Forms */
+    .auth-body {
+        padding: 15px 10px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    input, select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .btn {
+        padding: 10px 16px;
+        font-size: 14px;
+        width: 100%;
+        margin: 4px 0;
+    }
+    
+    /* Stats cards */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .stat-card {
+        padding: 12px;
+    }
+    
+    .stat-card h3 {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+    
+    .stat-card p {
+        font-size: 18px;
+    }
+    
+    /* Tables */
+    .data-table {
+        font-size: 12px;
+    }
+    
+    .data-table th, 
+    .data-table td {
+        padding: 6px 8px;
+    }
+    
+    /* Utility classes */
+    .mt-3 {
+        margin-top: 10px;
+    }
+    
+    /* Hide non-essential elements */
+    .desktop-only {
+        display: none !important;
+    }
+    
+    /* Force single column layouts */
+    .compact-analytics,
+    .filter-controls,
+    .action-buttons {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+    
+    /* Make sure everything fits horizontally */
+    .search-box input {
+        max-width: 100%;
+    }
+    
+    /* Toast notifications */
+    .toast {
+        width: 94%;
+        left: 3%;
+        right: auto;
+        max-width: none;
+        padding: 10px 15px;
+    }
+    
+    /* Checkbox sizing */
+    input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+    }
+}
+        :root {
+    /* Modern Color Palette */
+    --primary-color: #030c35;
+    --primary-light: #4895ef;
+    --primary-dark: #aed689;
+    --secondary-color: #f72585;
+    --secondary-light: #b5179e;
+    --secondary-dark: #644877;
+    --accent-color: #4cc9f0;
+    --accent-light: #56cfe1;
+    --dark-color: #14213d;
+    --light-color: #f8f9fa;
+    --white: #f5e2e2;
+    --gray-100: #f1f3f5;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-600: #868e96;
+    --gray-800: #343a40;
+    --success-color: #38b000;
+    --error-color: #e5383b;
+    --warning-color: #ffaa00;
+    --info-color: #0096c7;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 50px rgba(0,0,0,0.2);
+    
+    /* Transitions */
+    --transition-fast: all 0.15s ease;
+    --transition-normal: all 0.3s ease;
+    --transition-slow: all 0.5s ease;
+}
+/* Modern Auth Container Styles */
+#authContainer {
+
+    position: relative;
+    background: linear-gradient(135deg, var(--dark-color), var(--primary-dark));
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   background-color: #dfc0c0;
+    overflow: hidden;
+    text-align: center;
+}
+
+#authContainer .particles {
+    position: absolute;
+    width: 100%;
+  
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+#authContainer .spark-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#authContainer #container {
+ padding: 20%;
+    background-color: #f5e2e2;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    width: 900px;
+    max-width: 100%;
+    min-height: 730px;
+    z-index: 2;
+    display: flex;
+}
+
+#authContainer .form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#authContainer .sign-in-container {
+    left: 0;
+    opacity: 1;
+    z-index: 2;
+}
+
+#authContainer .sign-up-container {
+    left: 0;
+    opacity: 0;
+    z-index: 1;
+}
+
+#authContainer #container.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+    opacity: 0;
+    z-index: 1;
+}
+
+#authContainer #container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 2;
+}
+
+#authContainer .overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 100;
+}
+
+#authContainer #container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+#authContainer .overlay {
+    background: linear-gradient(135deg, #f72585, #7209b7);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#authContainer #container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+#authContainer .overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 60px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#authContainer .overlay-left {
+    transform: translateX(-20%);
+}
+
+#authContainer #container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+#authContainer .overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+#authContainer #container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+#authContainer .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    color: #4361ee;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+#authContainer .logo i {
+    margin-right: 10px;
+    font-size: 28px;
+}
+
+#authContainer h1 {
+    font-weight: 700;
+    margin: 0 0 20px;
+    font-size: 2.2rem;
+    color: #14213d;
+    text-align: center;
+}
+
+#authContainer .overlay-panel h1 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+#authContainer p {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+    margin: 0 0 30px;
+    color: #868e96;
+}
+
+#authContainer .overlay-panel p {
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 30px;
+}
+
+#authContainer form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+#authContainer .social-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+#authContainer .social-container a {
+    border: 1px solid #e9ecef;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+    width: 44px;
+    color: #343a40;
+    transition: all 0.3s ease;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+#authContainer .social-container a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#authContainer .social-container a i {
+    font-size: 18px;
+}
+
+#authContainer .divider {
+    display: block;
+    text-align: center;
+    margin: 20px 0;
+    color: #868e96;
+    font-size: 14px;
+    position: relative;
+}
+
+#authContainer .divider::before, 
+#authContainer .divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 1px;
+    background-color: #e9ecef;
+}
+
+#authContainer .divider::before {
+    left: 0;
+}
+
+#authContainer .divider::after {
+    right: 0;
+}
+
+#authContainer .input-group {
+    position: relative;
+    margin: 0 0 20px;
+    width: 100%;
+}
+
+#authContainer .input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #868e96;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#authContainer input {
+    background-color: #f1f3f5;
+    border: 1px solid #e9ecef;
+    padding: 14px 15px 14px 45px;
+    margin: 0;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    font-family: 'Poppins', sans-serif;
+}
+
+#authContainer input:focus {
+    outline: none;
+    border-color: #4895ef;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+#authContainer input:focus ~ .input-icon {
+    color: #4361ee;
+}
+
+#authContainer .input-focus-animation {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4361ee;
+    transition: width 0.4s ease;
+    z-index: 2;
+    border-radius: 0 0 8px 8px;
+}
+
+#authContainer input:focus ~ .input-focus-animation {
+    width: 100%;
+}
+
+#authContainer .password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #868e96;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+#authContainer .password-toggle:hover {
+    color: #4361ee;
+}
+
+#authContainer .password-strength {
+    width: 100%;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#authContainer .strength-bar {
+    height: 4px;
+    flex-grow: 1;
+    background-color: #e9ecef;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+#authContainer .strength-text {
+    font-size: 12px;
+    color: #868e96;
+    transition: all 0.3s ease;
+}
+
+#authContainer .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 20px;
+}
+
+#authContainer .remember-me {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #868e96;
+    cursor: pointer;
+    user-select: none;
+}
+
+#authContainer .remember-me input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+#authContainer .checkmark {
+    position: relative;
+    height: 18px;
+    width: 18px;
+    background-color: #f1f3f5;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-right: 8px;
+    transition: all 0.3s ease;
+}
+
+#authContainer .remember-me:hover input ~ .checkmark {
+    background-color: #e9ecef;
+}
+
+#authContainer .remember-me input:checked ~ .checkmark {
+    background-color: #4361ee;
+    border-color: #4361ee;
+}
+
+#authContainer .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+#authContainer .remember-me input:checked ~ .checkmark:after {
+    display: block;
+}
+
+#authContainer .remember-me .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+#authContainer .forgot-password {
+    color: #868e96;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+#authContainer .forgot-password:hover {
+    color: #4361ee;
+}
+
+#authContainer .toggle-form {
+    color: #4361ee;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 5px;
+}
+
+#authContainer .toggle-form:hover {
+    color: #3a0ca3;
+    text-decoration: underline;
+}
+
+#authContainer .form-footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #868e96;
+}
+
+/* Button Styles */
+#authContainer .btn-pulse {
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, #4361ee, #4895ef);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 30px;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+#authContainer .btn-pulse:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #4895ef, #4361ee);
+}
+
+#authContainer .btn-pulse:active {
+    transform: translateY(-1px);
+}
+
+#authContainer .btn-pulse:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+}
+
+#authContainer .btn-pulse .btn-text {
+    position: relative;
+    z-index: 1;
+}
+
+#authContainer .btn-pulse .btn-icon {
+    margin-left: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+#authContainer .btn-pulse:hover .btn-icon {
+    transform: translateX(3px);
+}
+
+#authContainer .btn-pulse::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #4361ee, #4895ef);
+}
+
+#authContainer .btn-pulse:hover::after {
+    transform: scale(1.05);
+    opacity: 0.5;
+}
+
+#authContainer .ghost {
+    background: transparent;
+    border: 2px solid #fff;
+    box-shadow: none;
+}
+
+#authContainer .ghost::after {
+    content: none;
+}
+
+#authContainer .ghost:hover {
+    background: #fff;
+    color: #4361ee;
+}
+
+#authContainer .ghost:hover .btn-icon {
+    color: #4361ee;
+}
+
+/* Toast Notification */
+#authContainer .toast {
+    position: fixed;
+    top: 25px;
+    right: 30px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 18px 30px 18px 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-left: 4px solid #38b000;
+    overflow: hidden;
+    transform: translateX(calc(100% + 30px));
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+}
+
+#authContainer .toast.active {
+    transform: translateX(0%);
+}
+
+#authContainer .toast .toast-content {
+    display: flex;
+    align-items: center;
+}
+
+#authContainer .toast-content .toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+    background-color: #38b000;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+#authContainer .toast-content .message {
+    display: flex;
+    flex-direction: column;
+}
+
+#authContainer .message .text {
+    font-size: 15px;
+    font-weight: 400;
+    color: #343a40;
+}
+
+#authContainer .message .text.text-1 {
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+#authContainer .toast .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: #ddd;
+}
+
+#authContainer .toast .progress:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #38b000;
+}
+
+#authContainer .progress.active:before {
+    animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+    100% {
+        right: 100%;
+    }
+}
+
+/* Spark animations */
+#authContainer .spark {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #4cc9f0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+    animation: sparkAnimation 0.8s ease-out forwards;
+    box-shadow: 0 0 10px 2px #4cc9f0;
+}
+
+@keyframes sparkAnimation {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+        width: 6px;
+        height: 6px;
+    }
+    100% {
+        transform: translate(var(--spark-x), var(--spark-y));
+        opacity: 0;
+        width: 2px;
+        height: 2px;
+    }
+}
+
+
+@media (max-width: 991px) {
+
+    #authContainer #container {
+    padding: 29%;
+    background-color: #f5e2e2;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    width: 800px;
+    max-width: 100%;
+    min-height: 670px;
+    z-index: 2;
+    display: flex;
+}
+    #authContainer .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 48%;
+    transform: translateY(-50%);
+    color: #868e96;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+    #authContainer {
+        padding: 0 30px;
+    }    
+    #authContainer h1 {
+        font-size: 2rem;
+    }
+    
+    #authContainer .btn-pulse {
+        padding: 12px 25px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    #authContainer #container {
+    padding: 29%;
+    background-color: #f5e2e2;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    width: 650px;
+    max-width: 100%;
+    min-height: 580px;
+    z-index: 2;
+    display: flex;
+}
+    #authContainer .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 48%;
+    transform: translateY(-50%);
+    color: #868e96;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+    #authContainer {
+
+
+        padding: 15px;
+    }
+    
+    #authContainer .form-container {
+        margin-top: 4%;
+        padding: 30px;
+    }
+    
+    #authContainer .particles {
+        display: none;
+    }
+    
+    #authContainer .spark-overlay {
+        display: none;
+    }
+
+    #authContainer .form-container {
+        padding: 30px 20px;
+    }
+    
+    #authContainer h1 {
+        font-size: 1rem;
+    }
+    
+    #authContainer p {
+        font-size: 0.9rem;
+    }
+    
+    #authContainer .input-group {
+        margin: 0 0 7px;
+    }
+    
+    #authContainer .input-icon {
+        font-size: 14px;
+    }
+    
+    #authContainer input {
+        padding: 10px 15px 10px 35px;
+        font-size: 12px;
+    }
+    
+    #authContainer .password-strength {
+        margin-top: 5px;
+    }
+    
+    #authContainer .strength-bar {
+        height: 3px;
+    }
+    
+    #authContainer .strength-text {
+        font-size: 12px;
+    }
+    
+    #authContainer .form-options {
+        font-size: 12px;
+    }
+    
+    #authContainer .remember-me {
+        font-size: 11px;
+        margin-right: 5%;
+    }
+    
+    #authContainer .forgot-password {
+        font-size: 11px;
+        margin-left: 5%;
+    }
+    
+    #authContainer .toggle-form {
+        font-size: 12px;
+    }
+    
+    #authContainer .form-footer {
+        font-size: 12px;
+    }
+    
+    #authContainer .btn-pulse {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    #authContainer .btn-pulse .btn-icon {
+        font-size: 12px;
+    }
+    
+    #authContainer .btn-pulse .btn-text {
+        font-size: 14px;
+    }
+    
+    #authContainer .btn-pulse:hover .btn-icon {
+        font-size: 14px;
+    }
+    
+    #authContainer .btn-pulse:hover .btn-text {
+        font-size: 14px;
+    }
+    
+    #authContainer .btn-pulse:active {
+        transform: translateY(-1px);
+    }
+    
+    #authContainer .btn-pulse:focus {
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+    }
+    
+    #authContainer .overlay-container {
+        font-size: smaller;
+    }
+    #authContainer .overlay-panel {
+        padding: 0 20px;
+    }
+    #authContainer .container {
+        flex-direction: column;
+        width: 100%;
+        font-size: smaller;
+        min-height: 65vh;
+    }
+
+    #authContainer .overlay-left, 
+    #authContainer .overlay-right {
+        transform: translateX(0);
+    }
+    
+
+}
+
+@media (max-width: 470px) {
+    #authContainer #container {
+    padding: 29%;
+    background-color: #f5e2e2;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    width: 800px;
+    max-width: 100%;
+    min-height: 470px;
+    z-index: 2;
+    display: flex;
+}
+    #authContainer .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 46%;
+    transform: translateY(-50%);
+    color: #868e96;
+    font-size: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+
+  
+    
+    #authContainer .form-container {
+        margin-top: 4%;
+      
+        padding: 30px;
+        text-align: center;
+    }
+    
+    #authContainer .particles {
+        text-align: center;
+        display: none;
+    }
+    
+    #authContainer .spark-overlay {
+        text-align: center;
+        display: none;
+    }
+
+    #authContainer .form-container {
+        text-align: center;
+        padding: 30px 20px;
+    }
+    
+    #authContainer h1 {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+    
+    #authContainer p {
+        text-align: center;
+        font-size: 0.6rem;
+    }
+    
+    #authContainer .input-group {
+        text-align: center;
+        margin: 0 0 7px;
+    }
+    
+    #authContainer .input-icon {
+        text-align: center;
+        font-size: 10px;
+    }
+    
+    #authContainer .logo {
+        text-align: center;
+        font-size: 11.7px;
+        text-align: center;
+    }
+    
+    #authContainer input {
+       
+        padding: 10px 15px 10px 35px;
+        font-size: 9px; 
+        
+    }
+    
+    #authContainer .password-strength {
+        margin-top: 5px;
+    }
+    
+    #authContainer .strength-bar {
+        height: 3px;
+    }
+    
+    #authContainer .strength-text {
+        font-size: 9px;
+    }
+    
+    #authContainer .form-options {
+        font-size: 9px;
+    }
+    
+    #authContainer .remember-me {
+        font-size: 8px;
+        margin-right: 5%;
+    }
+    
+    #authContainer .forgot-password {
+        font-size: 8px;
+        margin-left: 5%;
+    }
+    
+    #authContainer .toggle-form {
+        font-size: 8px;
+    }
+    
+    #authContainer .form-footer {
+        font-size: 9px;
+    }
+    
+    #authContainer .btn-pulse {
+        padding: 12px 20px;
+        font-size: 11px;
+    }
+    
+    #authContainer .btn-pulse .btn-icon {
+        font-size: 9px;
+    }
+    
+    #authContainer .btn-pulse .btn-text {
+        font-size: 9px;
+    }
+    
+    #authContainer .btn-pulse:hover .btn-icon {
+        font-size: 11px;
+    }
+    
+    #authContainer .btn-pulse:hover .btn-text {
+        font-size: 11px;
+    }
+    
+    #authContainer .btn-pulse:active {
+        transform: translateY(-1px);
+    }
+    
+    #authContainer .btn-pulse:focus {
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+    }
+    
+    #authContainer .overlay-container {
+        font-size: smaller;
+    }
+    #authContainer .overlay-panel {
+        padding: 0 20px;
+    }
+
+    #authContainer .container {
+        flex-direction: column;
+        width: 100%;
+        font-size: smaller;
+        min-height: 65vh;
+    }
+
+    #authContainer .overlay-left, 
+    #authContainer .overlay-right {
+        transform: translateX(0);
+    }
+    
+    #authContainer .btn-pulse {
+        width: 100%;
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+   <!-- Auth Container -->
+<div class="container" id="authContainer">
+    <div class="particles" id="particles-js"></div>
+    <div class="spark-overlay"></div>
+    
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form id="registerForm">
+                <div class="logo">
+                    <i class="fas fa-user-lock"></i>
+                    <span>Smart Attendance Pro</span>
+                </div>
+                <h1>Create Account</h1>
+           
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="regName" placeholder="Full Name" required />
+                    <span class="input-focus-animation"></span>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="regEmail" placeholder="Email Address" required />
+                    <span class="input-focus-animation"></span>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="regPassword" placeholder="Password" required />
+                    <span class="input-focus-animation"></span>
+                    <div class="password-strength">
+                        <span class="strength-bar"></span>
+                        <span class="strength-bar"></span>
+                        <span class="strength-bar"></span>
+                        <span class="strength-text"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="regConfirmPassword" placeholder="Confirm Password" required />
+                    <span class="input-focus-animation"></span>
+                </div>
+                <button type="submit" class="btn-pulse">
+                    <span class="btn-text">Sign Up</span>
+                    <i class="fas fa-arrow-right btn-icon"></i>
+                </button>
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" class="toggle-form">Sign In</a></p>
+                </div>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form id="loginForm">
+                <div class="logo">
+                    <i class="fas fa-user-lock"></i>
+                    <span>Smart Attendance Pro</span>
+                </div>
+                <h1>Welcome Back</h1>
+          
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="loginEmail" placeholder="Email Address" required />
+                    <span class="input-focus-animation"></span>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="loginPassword" placeholder="Password" required />
+                    <span class="input-focus-animation"></span>
+                    <i class="fas fa-eye password-toggle"></i>
+                </div>
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-pulse">
+                    <span class="btn-text">Sign In</span>
+                    <i class="fas fa-arrow-right btn-icon"></i>
+                </button>
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" class="toggle-form">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost btn-pulse" id="signIn">
+                        <span class="btn-text">Sign In</span>
+                        <i class="fas fa-arrow-right btn-icon"></i>
+                    </button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start your journey with us</p>
+                    <button class="ghost btn-pulse" id="signUp">
+                        <span class="btn-text">Sign Up</span>
+                        <i class="fas fa-arrow-right btn-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Dashboard Container -->
+    <div class="container hidden" id="dashboardContainer">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h2>Attendance Dashboard</h2>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">T</div>
+                    <div>
+                        <div id="userName">Teacher</div>
+                        <div style="font-size: 12px;" id="userRole">Teacher</div>
+                    </div>
+                    <button class="btn btn-danger" onclick="logout()" style="margin-left: auto;">Logout</button>
+                </div>
+            </div>
+            <div class="dashboard-body">
+                <div class="nav-tabs">
+                    <div class="nav-tab active" onclick="switchDashboardTab('students')">Students</div>
+                    <div class="nav-tab" onclick="switchDashboardTab('attendance')">Attendance</div>
+                    <div class="nav-tab" onclick="switchDashboardTab('analytics')">Analytics</div>
+                    <div class="nav-tab" onclick="generateWeeklyReport()">Weekly Report</div>
+                    <div class="nav-tab" onclick="switchDashboardTab('settings')">Settings</div>
+                </div>
+                
+                <!-- Students Tab -->
+                <div id="studentsTab" class="tab-content active">
+                    <h3>Manage Students</h3>
+                    <div class="search-box">
+                        <input type="text" id="studentSearch" placeholder="Search students..." oninput="searchStudents()">
+                    </div>
+                    <div class="filter-controls">
+                        <select id="studentClassFilter" onchange="filterStudents()">
+                            <option value="">All Classes</option>
+                            <option value="cse">Computer Science</option>
+                            <option value="electrical">Electrical</option>
+                            <option value="civil">Civil</option>
+                            <option value="it">Information Technology</option>
+                            <option value="pharmacy">Pharmacy</option>
+                            <option value="mechanical">Mechanical</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; gap: 15px;">
+                        <div style="flex: 1;">
+                            <label for="studentName">Student Name</label>
+                            <input type="text" id="studentName" placeholder="Enter student name">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="studentRoll">Roll Number</label>
+                            <input type="text" id="studentRoll" placeholder="Enter roll number">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="studentClass">Class</label>
+                            <select id="studentClass">
+                                <option value=""disabled selected>Select</option>
+                                <option value="cse">Computer Science</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="civil">Civil</option>
+                                <option value="it">Information Technology</option>
+                                <option value="pharmacy">Pharmacy</option>
+                                <option value="mechanical">Mechanical</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="addStudent()">Add Student</button>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Class</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Students will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Attendance Tab -->
+                <div id="attendanceTab" class="tab-content">
+                    <h3>Record Attendance</h3>
+                    <div class="filter-controls">
+                        <div class="form-group" style="flex: 1; min-width: 200px;">
+                            <label for="attendanceClass">Class</label>
+                            <select id="attendanceClass">
+                                <option value=""disabled selected>Select Class</option>
+                                <option value="cse">Computer Science</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="civil">Civil</option>
+                                <option value="it">Information Technology</option>
+                                <option value="pharmacy">Pharmacy</option>
+                                <option value="mechanical">Mechanical</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1; min-width: 200px;">
+                            <label for="attendanceDate">Date</label>
+                            <input type="date" id="attendanceDate">
+                        </div>
+                        <div style="align-self: flex-end; min-width: 100px;">
+                            <button class="btn" onclick="loadStudentsForAttendance()">View Student Data</button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-box">
+                        <input type="text" id="attendanceSearch" placeholder="Search students..." oninput="searchAttendance()">
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Name</th>
+                                    <th class="checkbox-cell">Lecture 1</th>
+                                    <th class="checkbox-cell">Lecture 2</th>
+                                    <th class="checkbox-cell">Lecture 3</th>
+                                    <th class="checkbox-cell">Lecture 4</th>
+                                    <th class="checkbox-cell">Lecture 5</th>
+                                    <th class="checkbox-cell">Lecture 6</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody">
+                                <!-- Attendance records will be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="saveAttendance()">Save Attendance</button>
+                        <button class="btn" onclick="markAllPresent()">Mark All Present</button>
+                        <button class="btn btn-danger" onclick="markAllAbsent()">Mark All Absent</button>
+                    </div>
+                </div>
+                
+                <!-- Analytics Tab -->
+                <div id="analyticsTab" class="tab-content">
+                    <h3>Attendance Analytics</h3>
+                    <div class="filter-controls">
+                        <select id="analyticsClassFilter" onchange="updateAnalytics()">
+                            <option value=""disabled selected>All Classes</option>
+                            <option value="cse">Computer Science</option>
+                            <option value="electrical">Electrical</option>
+                            <option value="civil">Civil</option>
+                            <option value="it">Information Technology</option>
+                            <option value="pharmacy">Pharmacy</option>
+                            <option value="mechanical">Mechanical</option>
+                        </select>
+                        <input type="date" id="analyticsStartDate" onchange="updateAnalytics()">
+                        <input type="date" id="analyticsEndDate" onchange="updateAnalytics()">
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Students</h3>
+                            <p id="totalStudents">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Average Attendance</h3>
+                            <p id="avgAttendance">0%</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Most Absent Student</h3>
+                            <p id="mostAbsent">-</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Best Attendance</h3>
+                            <p id="bestAttendance">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="compact-analytics">
+                        <div class="chart-container">
+                            <canvas id="attendanceChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="classComparisonChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Student Name</th>
+                                    <th>Class</th>
+                                    <th>Lectures Attended</th>
+                                    <th>Total Lectures</th>
+                                    <th>Attendance %</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analyticsTableBody">
+                                <!-- Analytics data will be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Settings Tab -->
+                <div id="settingsTab" class="tab-content">
+                    <h3>System Settings</h3>
+                    <div class="form-group">
+                        <label for="lecturesPerDay">Lectures Per Day</label>
+                        <input type="number" id="lecturesPerDay" min="1" max="10" value="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="attendanceThreshold">Attendance Threshold (%)</label>
+                        <input type="number" id="attendanceThreshold" min="0" max="100" value="75">
+                    </div>
+                    <div class="form-group">
+                        <label for="autoReport">Auto-generate Weekly Report</label>
+                        <select id="autoReport">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="saveSettings()">Save Settings</button>
+                    
+                    <h3 style="margin-top: 30px;">Data Management</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="exportData()">Export Data</button>
+                        <button class="btn btn-danger" onclick="confirmReset()">Reset All Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+
+        // Database
+        let users = JSON.parse(localStorage.getItem('attendanceUsers')) || [];
+        let students = JSON.parse(localStorage.getItem('attendanceStudents')) || [];
+        let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let settings = JSON.parse(localStorage.getItem('attendanceSettings')) || {
+            lecturesPerDay: 6,
+            attendanceThreshold: 75,
+            autoReport: true
+        };
+
+        // Charts
+        let attendanceChart = null;
+        let classComparisonChart = null;
+
+        // Check if we should generate weekly report
+        checkWeeklyReport();
+
+        // DOM Elements
+        const authContainer = document.getElementById('authContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+
+        // Initialize UI if user is already logged in
+        if (currentUser) {
+            authContainer.classList.add('hidden');
+            dashboardContainer.classList.remove('hidden');
+            updateUI();
+            renderStudentsTable();
+            updateAnalytics();
+            loadSettings();
+            
+            // Set default dates
+            const today = new Date();
+            document.getElementById('attendanceDate').valueAsDate = today;
+            document.getElementById('analyticsStartDate').valueAsDate = new Date(today.setDate(today.getDate() - 30));
+            document.getElementById('analyticsEndDate').valueAsDate = new Date();
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    ${type === 'success' ? '✓' : type === 'error' ? '✗' : '⚠'}
+                </div>
+                <div>${message}</div>
+            `;
+            document.getElementById('toastContainer').appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // Switch between login/register tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelector(`.nav-tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+        }
+
+        // Switch dashboard tabs
+        function switchDashboardTab(tabName) {
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelector(`.nav-tab[onclick="switchDashboardTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            
+            // Initialize charts when analytics tab is opened
+            if (tabName === 'analytics') {
+                setTimeout(() => {
+                    initCharts();
+                    updateAnalytics();
+                }, 100);
+            }
+        }
+
+        // Update UI with current user info
+        function updateUI() {
+            if (!currentUser) return;
+            
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('userRole').textContent = currentUser.role;
+        }
+
+        // Initialize charts
+        function initCharts() {
+            const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+            const comparisonCtx = document.getElementById('classComparisonChart').getContext('2d');
+            
+            // Destroy existing charts if they exist
+            if (attendanceChart) attendanceChart.destroy();
+            if (classComparisonChart) classComparisonChart.destroy();
+            
+            attendanceChart = new Chart(attendanceCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Attendance %',
+                        data: [],
+                        backgroundColor: 'rgba(108, 92, 231, 0.2)',
+                        borderColor: 'rgba(108, 92, 231, 1)',
+                        borderWidth: 2,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            classComparisonChart = new Chart(comparisonCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Computer Science', 'Electrical', 'Civil', 'IT', 'Pharmacy', 'Mechanical'],
+                    datasets: [{
+                        label: 'Average Attendance %',
+                        data: [],
+                        backgroundColor: [
+                            'rgba(108, 92, 231, 0.7)',
+                            'rgba(0, 184, 148, 0.7)',
+                            'rgba(253, 203, 110, 0.7)',
+                            'rgba(253, 121, 168, 0.7)',
+                            'rgba(85, 239, 196, 0.7)',
+                            'rgba(161, 136, 127, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(108, 92, 231, 1)',
+                            'rgba(0, 184, 148, 1)',
+                            'rgba(253, 203, 110, 1)',
+                            'rgba(253, 121, 168, 1)',
+                            'rgba(85, 239, 196, 1)',
+                            'rgba(161, 136, 127, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Register new user
+       // Login user
+function login(event) {
+    if (event) event.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    if (!email || !password) {
+        showToast('Please enter email and password', 'error');
+        return;
+    }
+    
+    // Show loading state
+    const loginBtn = document.querySelector('#loginForm button[type="submit"]');
+    const btnText = loginBtn.querySelector('.btn-text');
+    const btnIcon = loginBtn.querySelector('.btn-icon');
+    
+    btnText.textContent = 'Signing In...';
+    btnIcon.classList.remove('fa-arrow-right');
+    btnIcon.classList.add('fa-spinner', 'fa-spin');
+    loginBtn.disabled = true;
+    
+    setTimeout(() => {
+        try {
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (!user) {
+                showToast('Invalid credentials', 'error');
+                return;
+            }
+            
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Update UI
+            updateUI();
+            
+            // Show dashboard
+            authContainer.classList.add('hidden');
+            dashboardContainer.classList.remove('hidden');
+            
+            // Load initial data
+            renderStudentsTable();
+            updateAnalytics();
+            loadSettings();
+            
+            // Set default dates
+            const today = new Date();
+            document.getElementById('attendanceDate').valueAsDate = today;
+            document.getElementById('analyticsStartDate').valueAsDate = new Date(today.setDate(today.getDate() - 30));
+            document.getElementById('analyticsEndDate').valueAsDate = new Date();
+            
+            showToast(`Welcome back, ${user.name}!`, 'success');
+            
+            // Clear form
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        } catch (error) {
+            showToast('Login failed', 'error');
+        } finally {
+            // Reset button state
+            btnText.textContent = 'Sign In';
+            btnIcon.classList.remove('fa-spinner', 'fa-spin');
+            btnIcon.classList.add('fa-arrow-right');
+            loginBtn.disabled = false;
+        }
+    }, 1500);
+}
+
+// Register user
+function register(event) {
+    if (event) event.preventDefault();
+    
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    const confirmPassword = document.getElementById('regConfirmPassword').value;
+    const role = "teacher";
+    
+    if (!name || !email || !password || !confirmPassword) {
+        showToast('Please fill all fields', 'error');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        showToast('Passwords do not match', 'error');
+        return;
+    }
+    
+    if (users.some(user => user.email === email)) {
+        showToast('Email already registered', 'error');
+        return;
+    }
+    
+    // Show loading state
+    const registerBtn = document.querySelector('#registerForm button[type="submit"]');
+    const btnText = registerBtn.querySelector('.btn-text');
+    const btnIcon = registerBtn.querySelector('.btn-icon');
+    
+    btnText.textContent = 'Registering...';
+    btnIcon.classList.remove('fa-arrow-right');
+    btnIcon.classList.add('fa-spinner', 'fa-spin');
+    registerBtn.disabled = true;
+    
+    setTimeout(() => {
+        try {
+            const newUser = {
+                id: Date.now().toString(),
+                name,
+                email,
+                password, // In real app, hash this password
+                role,
+                createdAt: new Date()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('attendanceUsers', JSON.stringify(users));
+            
+            showToast('Registration successful! Please login', 'success');
+            
+            // Switch to login form and clear
+            document.getElementById('container').classList.remove('right-panel-active');
+            document.getElementById('regName').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regConfirmPassword').value = '';
+            
+            // Reset password strength indicator
+            document.querySelectorAll('.strength-bar').forEach(bar => {
+                bar.style.backgroundColor = '#e9ecef';
+            });
+            document.querySelector('.strength-text').textContent = '';
+        } catch (error) {
+            showToast('Registration failed', 'error');
+        } finally {
+            // Reset button state
+            btnText.textContent = 'Sign Up';
+            btnIcon.classList.remove('fa-spinner', 'fa-spin');
+            btnIcon.classList.add('fa-arrow-right');
+            registerBtn.disabled = false;
+        }
+    }, 1500);
+}
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            authContainer.classList.remove('hidden');
+            dashboardContainer.classList.add('hidden');
+            
+            // Clear login form
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            
+            showToast('Logged out successfully', 'success');
+        }
+
+        // Load settings
+        function loadSettings() {
+            document.getElementById('lecturesPerDay').value = settings.lecturesPerDay;
+            document.getElementById('attendanceThreshold').value = settings.attendanceThreshold;
+            document.getElementById('autoReport').value = settings.autoReport;
+        }
+
+        // Save settings
+        function saveSettings() {
+            settings.lecturesPerDay = parseInt(document.getElementById('lecturesPerDay').value);
+            settings.attendanceThreshold = parseInt(document.getElementById('attendanceThreshold').value);
+            settings.autoReport = document.getElementById('autoReport').value === 'true';
+            
+            localStorage.setItem('attendanceSettings', JSON.stringify(settings));
+            showToast('Settings saved successfully', 'success');
+        }
+
+        // Add new student
+        function addStudent() {
+            const name = document.getElementById('studentName').value;
+            const roll = document.getElementById('studentRoll').value;
+            const classVal = document.getElementById('studentClass').value;
+            
+            if (!name || !roll) {
+                showToast('Please enter student name and roll number', 'error');
+                return;
+            }
+            
+            if (students.some(s => s.roll === roll)) {
+                showToast('Roll number already exists', 'error');
+                return;
+            }
+            
+            const newStudent = {
+                roll,
+                name,
+                class: classVal,
+                addedBy: currentUser.id,
+                addedAt: new Date()
+            };
+            
+            students.push(newStudent);
+            localStorage.setItem('attendanceStudents', JSON.stringify(students));
+            renderStudentsTable();
+            
+            // Clear form
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentRoll').value = '';
+            
+            showToast(`Student ${name} added successfully`, 'success');
+        }
+
+        // Render students table
+        function renderStudentsTable() {
+            const tableBody = document.getElementById('studentsTableBody');
+            tableBody.innerHTML = '';
+            
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.roll}</td>
+                    <td>${student.name}</td>
+                    <td>${getClassName(student.class)}</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteStudent('${student.roll}')" style="padding: 6px 12px; font-size: 14px;">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Search students
+        function searchStudents() {
+            const searchTerm = document.getElementById('studentSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#studentsTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        // Filter students by class
+        function filterStudents() {
+            const classFilter = document.getElementById('studentClassFilter').value;
+            const rows = document.querySelectorAll('#studentsTableBody tr');
+            
+            rows.forEach(row => {
+                const classVal = row.cells[2].textContent.toLowerCase();
+                if (!classFilter || classVal.includes(classFilter.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Get class name from class code
+        function getClassName(classCode) {
+            const classes = {
+                'cse': 'Computer Science',
+                'electrical': 'Electrical',
+                'civil': 'Civil',
+                'it': 'Information Technology',
+                'pharmacy': 'Pharmacy',
+                'mechanical': 'Mechanical'
+            };
+            return classes[classCode] || classCode;
+        }
+
+        // Delete student
+        function deleteStudent(studentRoll) {
+            if (!confirm('Are you sure you want to delete this student?')) return;
+            
+            const index = students.findIndex(s => s.roll === studentRoll);
+            if (index !== -1) {
+                students.splice(index, 1);
+                localStorage.setItem('attendanceStudents', JSON.stringify(students));
+                renderStudentsTable();
+                showToast('Student deleted successfully', 'success');
+            }
+        }
+
+        // Load students for attendance
+        function loadStudentsForAttendance() {
+            const classVal = document.getElementById('attendanceClass').value;
+            const date = document.getElementById('attendanceDate').value;
+            
+            if (!classVal || !date) {
+                showToast('Please select class and date', 'error');
+                return;
+            }
+            
+            const classStudents = students.filter(s => s.class === classVal);
+            const tableBody = document.getElementById('attendanceTableBody');
+            tableBody.innerHTML = '';
+            
+            classStudents.forEach(student => {
+                // Check if attendance already exists for this date
+                const existingRecord = attendanceRecords.find(
+                    r => r.studentRoll === student.roll && r.date === date
+                );
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.roll}</td>
+                    <td>${student.name}</td>
+                    ${[1, 2, 3, 4, 5, 6].map(lecture => `
+                        <td class="checkbox-cell">
+                            <input type="checkbox" ${existingRecord?.lectures[lecture-1] ? 'checked' : ''} 
+                                onchange="updateAttendanceRecord('${student.roll}', '${date}', ${lecture-1}, this.checked)">
+                        </td>
+                    `).join('')}
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            if (classStudents.length === 0) {
+                showToast('No students found for this class', 'warning');
+            } else {
+                showToast(`Loaded ${classStudents.length} students`, 'success');
+            }
+        }
+
+        // Search attendance records
+        function searchAttendance() {
+            const searchTerm = document.getElementById('attendanceSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#attendanceTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        // Mark all present
+        function markAllPresent() {
+            const checkboxes = document.querySelectorAll('#attendanceTableBody input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+                const row = checkbox.closest('tr');
+                const roll = row.cells[0].textContent;
+                const date = document.getElementById('attendanceDate').value;
+                const lectureIndex = Array.from(row.cells).indexOf(checkbox.closest('td')) - 2;
+                
+                if (lectureIndex >= 0 && lectureIndex < 6) {
+                    updateAttendanceRecord(roll, date, lectureIndex, true);
+                }
+            });
+            showToast('All students marked as present', 'success');
+        }
+
+        // Mark all absent
+        function markAllAbsent() {
+            const checkboxes = document.querySelectorAll('#attendanceTableBody input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                const row = checkbox.closest('tr');
+                const roll = row.cells[0].textContent;
+                const date = document.getElementById('attendanceDate').value;
+                const lectureIndex = Array.from(row.cells).indexOf(checkbox.closest('td')) - 2;
+                
+                if (lectureIndex >= 0 && lectureIndex < 6) {
+                    updateAttendanceRecord(roll, date, lectureIndex, false);
+                }
+            });
+            showToast('All students marked as absent', 'success');
+        }
+
+        // Update attendance record
+        function updateAttendanceRecord(studentRoll, date, lectureIndex, isPresent) {
+            let record = attendanceRecords.find(
+                r => r.studentRoll === studentRoll && r.date === date
+            );
+            
+            if (!record) {
+                record = {
+                    id: Date.now().toString(),
+                    studentRoll,
+                    date,
+                    lectures: new Array(6).fill(false),
+                    recordedBy: currentUser.id,
+                    recordedAt: new Date()
+                };
+                attendanceRecords.push(record);
+            }
+            
+            record.lectures[lectureIndex] = isPresent;
+            localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+        }
+
+        // Save attendance
+        function saveAttendance() {
+            const date = document.getElementById('attendanceDate').value;
+            
+            if (!date) {
+                showToast('Please select a date', 'error');
+                return;
+            }
+            
+            // Filter records for the selected date
+            const dateRecords = attendanceRecords.filter(r => r.date === date);
+            
+            if (dateRecords.length === 0) {
+                showToast('No attendance data to save', 'warning');
+                return;
+            }
+            
+            showToast('Attendance saved successfully!', 'success');
+            updateAnalytics();
+            switchDashboardTab('analytics');
+        }
+
+        // Update analytics
+        function updateAnalytics() {
+            const classFilter = document.getElementById('analyticsClassFilter').value;
+            const startDate = document.getElementById('analyticsStartDate').value;
+            const endDate = document.getElementById('analyticsEndDate').value;
+            
+            // Filter students by class if selected
+            let filteredStudents = students;
+            if (classFilter) {
+                filteredStudents = students.filter(s => s.class === classFilter);
+            }
+            
+            // Calculate total students
+            document.getElementById('totalStudents').textContent = filteredStudents.length;
+            
+            // Calculate attendance stats
+            const studentStats = filteredStudents.map(student => {
+                // Filter records by date range if selected
+                let studentRecords = attendanceRecords.filter(r => r.studentRoll === student.roll);
+                if (startDate && endDate) {
+                    studentRecords = studentRecords.filter(r => {
+                        const recordDate = new Date(r.date);
+                        const start = new Date(startDate);
+                        const end = new Date(endDate);
+                        return recordDate >= start && recordDate <= end;
+                    });
+                }
+                
+                const totalLectures = studentRecords.length * settings.lecturesPerDay;
+                let attendedLectures = 0;
+                
+                studentRecords.forEach(record => {
+                    attendedLectures += record.lectures.filter(lecture => lecture).length;
+                });
+                
+                const attendancePercent = totalLectures > 0 
+                    ? Math.round((attendedLectures / totalLectures) * 100)
+                    : 0;
+                
+                // Determine status based on threshold
+                let status = 'Good';
+                if (attendancePercent < settings.attendanceThreshold) {
+                    status = attendancePercent < (settings.attendanceThreshold / 2) ? 'Critical' : 'Warning';
+                }
+                
+                return {
+                    roll: student.roll,
+                    name: student.name,
+                    class: student.class,
+                    attendedLectures,
+                    totalLectures,
+                    attendancePercent,
+                    status
+                };
+            });
+            
+            // Update analytics table
+            const analyticsBody = document.getElementById('analyticsTableBody');
+            analyticsBody.innerHTML = '';
+            
+            studentStats.forEach(stat => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${stat.roll}</td>
+                    <td>${stat.name}</td>
+                    <td>${getClassName(stat.class)}</td>
+                    <td>${stat.attendedLectures}</td>
+                    <td>${stat.totalLectures}</td>
+                    <td>${stat.attendancePercent}%</td>
+                    <td><span class="badge ${stat.status === 'Good' ? 'badge-success' : stat.status === 'Warning' ? 'badge-warning' : 'badge-danger'}">${stat.status}</span></td>
+                `;
+                analyticsBody.appendChild(row);
+            });
+            
+            // Calculate overall stats
+            if (studentStats.length > 0) {
+                const totalAttended = studentStats.reduce((sum, stat) => sum + stat.attendedLectures, 0);
+                const totalPossible = studentStats.reduce((sum, stat) => sum + stat.totalLectures, 0);
+                const avgAttendance = totalPossible > 0 
+                    ? Math.round((totalAttended / totalPossible) * 100)
+                    : 0;
+                
+                document.getElementById('avgAttendance').textContent = `${avgAttendance}%`;
+                
+                // Find most absent and best attendance
+                const sortedByAttendance = [...studentStats].sort((a, b) => 
+                    a.attendancePercent - b.attendancePercent
+                );
+                
+                if (sortedByAttendance.length > 0) {
+                    document.getElementById('mostAbsent').textContent = 
+                        `${sortedByAttendance[0].name} (${sortedByAttendance[0].attendancePercent}%)`;
+                    document.getElementById('bestAttendance').textContent = 
+                        `${sortedByAttendance[sortedByAttendance.length - 1].name} (${sortedByAttendance[sortedByAttendance.length - 1].attendancePercent}%)`;
+                }
+            }
+            
+            // Update charts if they exist
+            if (attendanceChart && classComparisonChart) {
+                updateCharts(studentStats);
+            }
+        }
+
+        // Update charts
+        function updateCharts(studentStats) {
+            // Update attendance trend chart
+            const dates = [...new Set(attendanceRecords.map(r => r.date))].sort();
+            const attendanceTrend = dates.map(date => {
+                const dateRecords = attendanceRecords.filter(r => r.date === date);
+                const totalPossible = dateRecords.length * settings.lecturesPerDay;
+                const totalAttended = dateRecords.reduce((sum, record) => {
+                    return sum + record.lectures.filter(l => l).length;
+                }, 0);
+                return totalPossible > 0 ? Math.round((totalAttended / totalPossible) * 100) : 0;
+            });
+            
+            attendanceChart.data.labels = dates;
+            attendanceChart.data.datasets[0].data = attendanceTrend;
+            attendanceChart.update();
+            
+            // Update class comparison chart
+            const classData = {
+                'cse': { total: 0, attended: 0 },
+                'electrical': { total: 0, attended: 0 },
+                'civil': { total: 0, attended: 0 },
+                'it': { total: 0, attended: 0 },
+                'pharmacy': { total: 0, attended: 0 },
+                'mechanical': { total: 0, attended: 0 }
+            };
+            
+            attendanceRecords.forEach(record => {
+                const student = students.find(s => s.roll === record.studentRoll);
+                if (student && classData[student.class]) {
+                    classData[student.class].total += settings.lecturesPerDay;
+                    classData[student.class].attended += record.lectures.filter(l => l).length;
+                }
+            });
+            
+            const classPercentages = [
+                classData['cse'].total > 0 ? Math.round((classData['cse'].attended / classData['cse'].total) * 100) : 0,
+                classData['electrical'].total > 0 ? Math.round((classData['electrical'].attended / classData['electrical'].total) * 100) : 0,
+                classData['civil'].total > 0 ? Math.round((classData['civil'].attended / classData['civil'].total) * 100) : 0,
+                classData['it'].total > 0 ? Math.round((classData['it'].attended / classData['it'].total) * 100) : 0,
+                classData['pharmacy'].total > 0 ? Math.round((classData['pharmacy'].attended / classData['pharmacy'].total) * 100) : 0,
+                classData['mechanical'].total > 0 ? Math.round((classData['mechanical'].attended / classData['mechanical'].total) * 100) : 0
+            ];
+            
+            classComparisonChart.data.datasets[0].data = classPercentages;
+            classComparisonChart.update();
+        }
+
+        // Check if weekly report should be generated
+        function checkWeeklyReport() {
+            if (!currentUser || !settings.autoReport) return;
+            
+            const lastReportDate = localStorage.getItem('lastReportDate');
+            const today = new Date();
+            const lastDate = lastReportDate ? new Date(lastReportDate) : null;
+            
+            // Generate report if 7 days have passed since last report
+            if (!lastDate || (today - lastDate) >= (7 * 24 * 60 * 60 * 1000)) {
+                generateWeeklyReport(true);
+                localStorage.setItem('lastReportDate', today.toISOString());
+            }
+        }
+
+        // Generate weekly report PDF
+        function generateWeeklyReport(auto = false) {
+            if (students.length === 0 || attendanceRecords.length === 0) {
+                showToast('No attendance data available for report', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            const btnText = document.querySelector('.nav-tab[onclick="generateWeeklyReport()"]');
+            const originalText = btnText.textContent;
+            btnText.innerHTML = '<span class="spinner active"></span> Generating...';
+            
+            setTimeout(() => {
+                try {
+                    // Calculate attendance stats
+                    const studentStats = students.map(student => {
+                        const studentRecords = attendanceRecords.filter(r => r.studentRoll === student.roll);
+                        const totalLectures = studentRecords.length * settings.lecturesPerDay;
+                        let attendedLectures = 0;
+                        
+                        studentRecords.forEach(record => {
+                            attendedLectures += record.lectures.filter(lecture => lecture).length;
+                        });
+                        
+                        const attendancePercent = totalLectures > 0 
+                            ? Math.round((attendedLectures / totalLectures) * 100)
+                            : 0;
+                        
+                        return {
+                            roll: student.roll,
+                            name: student.name,
+                            class: getClassName(student.class),
+                            attendedLectures,
+                            totalLectures,
+                            attendancePercent
+                        };
+                    });
+                    
+                    // Create PDF
+                    const doc = new jsPDF();
+                    
+                    // Add title
+                    doc.setFontSize(14);
+                    doc.setTextColor(40, 53, 147);
+                    doc.text('Weekly Attendance Report', 105, 20, { align: 'center' });
+                    
+                    // Add date
+                    doc.setFontSize(12);
+                    doc.setTextColor(100);
+                    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 30, { align: 'center' });
+                    
+                    // Add summary table
+                    doc.autoTable({
+                        head: [['Roll No', 'Name', 'Class', 'Lectures Attended', 'Total Lectures', 'Attendance %']],
+                        body: studentStats.map(stat => [
+                            stat.roll,
+                            stat.name,
+                            stat.class,
+                            stat.attendedLectures,
+                            stat.totalLectures,
+                            `${stat.attendancePercent}%`
+                        ]),
+                        startY: 40,
+                        theme: 'grid',
+                        headStyles: {
+                            fillColor: [108, 92, 231],
+                            textColor: 255,
+                            fontStyle: 'bold'
+                        },
+                        alternateRowStyles: {
+                            fillColor: [240, 240, 255]
+                        },
+                        styles: {
+                            cellPadding: 1.9,
+                            fontSize: 8,
+                            valign: 'middle'
+                        },
+                        columnStyles: {
+                            0: { cellWidth: 20 },
+                            1: { cellWidth: 40 },
+                            2: { cellWidth: 30 },
+                            3: { cellWidth: 25 },
+                            4: { cellWidth: 25 },
+                            5: { cellWidth: 25 }
+                        }
+                    });
+                    
+                    // Add summary stats
+                    const totalAttended = studentStats.reduce((sum, stat) => sum + stat.attendedLectures, 0);
+                    const totalPossible = studentStats.reduce((sum, stat) => sum + stat.totalLectures, 0);
+                    const avgAttendance = totalPossible > 0 
+                        ? Math.round((totalAttended / totalPossible) * 100)
+                        : 0;
+                    
+                    doc.setFontSize(11);
+                    doc.setTextColor(0);
+                    doc.text(`Average Attendance: ${avgAttendance}%`, 14, doc.lastAutoTable.finalY + 20);
+                    
+                    // Add attendance by day
+                    const dates = [...new Set(attendanceRecords.map(r => r.date))].sort();
+                    let yPos = doc.lastAutoTable.finalY + 40;
+                    
+                    dates.forEach(date => {
+                        if (yPos > 250) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        
+                        doc.setFontSize(12);
+                        doc.setTextColor(40, 53, 147);
+                        doc.text(`Attendance for ${date}`, 14, yPos);
+                        
+                        const dateRecords = attendanceRecords.filter(r => r.date === date);
+                        const dateStudents = {};
+                        
+                        dateRecords.forEach(record => {
+                            const student = students.find(s => s.roll === record.studentRoll);
+                            if (student) {
+                                dateStudents[student.roll] = {
+                                    name: student.name,
+                                    attended: record.lectures.filter(l => l).length,
+                                    total: settings.lecturesPerDay
+                                };
+                            }
+                        });
+                        
+                        doc.autoTable({
+                            head: [['Roll No', 'Name', 'Lectures Attended', 'Total Lectures']],
+                            body: Object.keys(dateStudents).map(roll => [
+                                roll,
+                                dateStudents[roll].name,
+                                dateStudents[roll].attended,
+                                dateStudents[roll].total
+                            ]),
+                            startY: yPos + 10,
+                            theme: 'grid',
+                            headStyles: {
+                                fillColor: [108, 92, 231],
+                                textColor: 255,
+                                fontStyle: 'bold'
+                            },
+                            styles: {
+                                cellPadding: 1.7,
+                                fontSize: 7,
+                                valign: 'middle'
+                            }
+                        });
+                        
+                        yPos = doc.lastAutoTable.finalY + 15;
+                    });
+                    
+                    // Save PDF
+                    const fileName = `Attendance_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
+                    doc.save(fileName);
+                    
+                    if (!auto) {
+                        showToast('Weekly report generated successfully!', 'success');
+                    }
+                } catch (error) {
+                    showToast('Failed to generate report', 'error');
+                } finally {
+                    // Reset button text
+                    btnText.textContent = originalText;
+                }
+            }, 500);
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                users,
+                students,
+                attendanceRecords,
+                settings
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `attendance_data_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Data exported successfully', 'success');
+        }
+
+        // Confirm reset
+        function confirmReset() {
+            if (confirm('Are you sure you want to reset ALL data? This cannot be undone!')) {
+                resetAllData();
+            }
+        }
+
+        // Reset all data
+        function resetAllData() {
+            localStorage.removeItem('attendanceUsers');
+            localStorage.removeItem('attendanceStudents');
+            localStorage.removeItem('attendanceRecords');
+            localStorage.removeItem('attendanceSettings');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('lastReportDate');
+            
+            users = [];
+            students = [];
+            attendanceRecords = [];
+            currentUser = null;
+            settings = {
+                lecturesPerDay: 6,
+                attendanceThreshold: 75,
+                autoReport: true
+            };
+            
+            // Reload the page
+            window.location.reload();
+        }
+        // Add form event listeners
+document.getElementById('loginForm').addEventListener('submit', login);
+document.getElementById('registerForm').addEventListener('submit', register);
+
+// Add toggle form event listeners
+document.querySelectorAll('.toggle-form, #signIn, #signUp').forEach(element => {
+    element.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('container').classList.toggle('right-panel-active');
+    });
+});
+
+// Password toggle functionality
+function setupPasswordToggle(inputElement) {
+    const parent = inputElement.parentNode;
+    const toggle = document.createElement('i');
+    toggle.className = 'fas fa-eye password-toggle';
+    parent.appendChild(toggle);
+    
+    toggle.addEventListener('click', function() {
+        const type = inputElement.getAttribute('type') === 'password' ? 'text' : 'password';
+        inputElement.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+}
+
+setupPasswordToggle(document.getElementById('loginPassword'));
+setupPasswordToggle(document.getElementById('regPassword'));
+setupPasswordToggle(document.getElementById('regConfirmPassword'));
+
+// Password strength indicator
+document.getElementById('regPassword').addEventListener('input', function() {
+    const password = this.value;
+    const strength = calculatePasswordStrength(password);
+    const bars = document.querySelectorAll('.strength-bar');
+    const text = document.querySelector('.strength-text');
+    
+    bars.forEach((bar, index) => {
+        bar.style.backgroundColor = index < strength.level ? strength.color : '#e9ecef';
+    });
+    
+    text.textContent = strength.text;
+    text.style.color = strength.color;
+});
+
+function calculatePasswordStrength(password) {
+    let strength = 0;
+    let text = 'Weak';
+    let color = '#e5383b'; // Error color
+    
+    if (password.length >= 8) strength++;
+    if (password.length >= 12) strength++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[^a-zA-Z0-9]/.test(password)) strength++;
+    
+    if (strength <= 2) {
+        text = 'Weak';
+        color = '#e5383b'; // Error color
+    } else if (strength <= 4) {
+        text = 'Medium';
+        color = '#ffaa00'; // Warning color
+    } else {
+        text = 'Strong';
+        color = '#38b000'; // Success color
+    }
+    
+    return {
+        level: Math.min(Math.ceil(strength / 2), 3),
+        text: text,
+        color: color
+    };
+}
+    </script>
+</body>
+</html>

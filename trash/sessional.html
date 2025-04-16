@@ -322,7 +322,7 @@ body {
     background-color: var(--white);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
     transition: var(--transition);
     border: none;
 }
@@ -384,9 +384,8 @@ body {
 }
 
 .form-col {
-    
     flex: 1;
-    padding: 0 20px;
+    padding: 0 10px;
     min-width: 250px;
 }
 
@@ -1330,7 +1329,6 @@ body {
                             </div>
                         </div>
                         
-
                         <!-- Recent Activity -->
                         <div class="recent-activity">
                             <h4><i class="fas fa-history"></i> Recent Activity</h4>
@@ -1384,8 +1382,8 @@ body {
                             <div class="form-row">
                                 <div class="form-col">
                                     <div class="form-group">
-                                        <label class="form-label" for="">Department</label>
-                                        <select class="form-control" id="">
+                                        <label class="form-label" for="studentDepartment">Department</label>
+                                        <select class="form-control" id="studentDepartment">
                                             <option value="">Select Department</option>
                                             <option value="Computer Science">Computer Science</option>
                                             <option value="Electrical Engineering">Electrical Engineering</option>
@@ -1397,7 +1395,7 @@ body {
                                 </div>
                                 <div class="form-col">
                                     <div class="form-group">
-                                        <label class="form-label" for="">Semester</label>
+                                        <label class="form-label" for="studentSemester">Semester</label>
                                         <select class="form-control" id="studentSemester">
                                             <option value="">Select Semester</option>
                                             <option value="1">1st Semester</option>
@@ -1411,23 +1409,7 @@ body {
                                 </div>
                             </div>
 
-                                <div class="form-col">
-                                    <div class="form-group">
-                                        <label class="form-label" for=" ">Subject</label>
-                                        <select class="form-control" id="">
-                                            <option value="">Select Subject</option>
-                                            <option value="1">Java</option>
-                                            <option value="2">DSUC</option>
-                                            <option value="3">CA</option>
-                                            <option value="4">GSED</option>
-                                            <option value="5">CNS</option>
-                                            
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-col">
+                            <div class="form-group">
                                 <label class="form-label">House Test</label>
                                 <div class="house-test-options">
                                     <div class="house-test-option" data-test="house1">House Test 1</div>
@@ -1437,46 +1419,171 @@ body {
                                 <input type="hidden" id="selectedHouseTest">
                             </div>
 
-                            
+                            <!-- Marks Type Tabs -->
+                            <div class="marks-type-tabs">
+                                <div class="marks-type-tab active" data-marks-type="theory">Mst Theory</div>
+                                <div class="marks-type-tab" data-marks-type="practical">Practical</div>
+                                <div class="marks-type-tab" data-marks-type="assignment">Assignment</div>
+                                <div class="marks-type-tab" data-marks-type="seminar">Seminar</div>
+                            </div>
 
-                            
-
-
-
-
-
-                            <div class="form-col" id="theoryMarks">
+                            <!-- Theory Marks (Default) -->
+                            <div class="marks-type-content active" id="theoryMarks">
                                 <div class="form-group">
-                                    <label class="form-label"> Marks </label>
+                                    <label class="form-label">Subject Marks (Max 6 subjects)</label>
                                     <div class="subject-grid">
                                         <div class="subject-input-group">
-                                            <label>1. Theory</label>
+                                            <label>Subject 1</label>
+                                            <input type="text" class="form-control mb-2" id="subject1" placeholder="Subject name">
                                             <input type="number" class="form-control" id="marks1" placeholder="Marks" min="0" max="100">
                                         </div>
                                         <div class="subject-input-group">
-                                            <label>2. Practical</label>
+                                            <label>Subject 2</label>
+                                            <input type="text" class="form-control mb-2" id="subject2" placeholder="Subject name">
                                             <input type="number" class="form-control" id="marks2" placeholder="Marks" min="0" max="100">
                                         </div>
                                         <div class="subject-input-group">
-                                            <label>3. Assignment</label>
+                                            <label>Subject 3</label>
+                                            <input type="text" class="form-control mb-2" id="subject3" placeholder="Subject name">
                                             <input type="number" class="form-control" id="marks3" placeholder="Marks" min="0" max="100">
                                         </div>
                                         <div class="subject-input-group">
-                                            <label>4. Seminar</label>
+                                            <label>Subject 4</label>
+                                            <input type="text" class="form-control mb-2" id="subject4" placeholder="Subject name">
                                             <input type="number" class="form-control" id="marks4" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Subject 5</label>
+                                            <input type="text" class="form-control mb-2" id="subject5" placeholder="Subject name">
+                                            <input type="number" class="form-control" id="marks5" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Subject 6</label>
+                                            <input type="text" class="form-control mb-2" id="subject6" placeholder="Subject name">
+                                            <input type="number" class="form-control" id="marks6" placeholder="Marks" min="0" max="100">
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Practical Marks -->
+                            <div class="marks-type-content" id="practicalMarks">
+                                <div class="form-group">
+                                    <label class="form-label">Practical Marks (Max 6 subjects)</label>
+                                    <div class="subject-grid">
+                                        <div class="subject-input-group">
+                                            <label>Practical 1</label>
+                                            <input type="text" class="form-control mb-2" id="practicalSubject1" placeholder="Practical name">
+                                            <input type="number" class="form-control" id="practicalMarks1" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Practical 2</label>
+                                            <input type="text" class="form-control mb-2" id="practicalSubject2" placeholder="Practical name">
+                                            <input type="number" class="form-control" id="practicalMarks2" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Practical 3</label>
+                                            <input type="text" class="form-control mb-2" id="practicalSubject3" placeholder="Practical name">
+                                            <input type="number" class="form-control" id="practicalMarks3" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Practical 4</label>
+                                            <input type="text" class="form-control mb-2" id="practicalSubject4" placeholder="Practical name">
+                                            <input type="number" class="form-control" id="practicalMarks4" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Practical 5</label>
+                                            <input type="text" class="form-control mb-2" id="practicalSubject5" placeholder="Practical name">
+                                            <input type="number" class="form-control" id="practicalMarks5" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Practical 6</label>
+                                            <input type="text" class="form-control mb-2" id="practicalSubject6" placeholder="Practical name">
+                                            <input type="number" class="form-control" id="practicalMarks6" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Assignment Marks -->
+                            <div class="marks-type-content" id="assignmentMarks">
+                                <div class="form-group">
+                                    <label class="form-label">Assignment Marks (Max 6 subjects)</label>
+                                    <div class="subject-grid">
+                                        <div class="subject-input-group">
+                                            <label>Assignment 1</label>
+                                            <input type="text" class="form-control mb-2" id="assignmentSubject1" placeholder="Assignment name">
+                                            <input type="number" class="form-control" id="assignmentMarks1" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Assignment 2</label>
+                                            <input type="text" class="form-control mb-2" id="assignmentSubject2" placeholder="Assignment name">
+                                            <input type="number" class="form-control" id="assignmentMarks2" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Assignment 3</label>
+                                            <input type="text" class="form-control mb-2" id="assignmentSubject3" placeholder="Assignment name">
+                                            <input type="number" class="form-control" id="assignmentMarks3" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Assignment 4</label>
+                                            <input type="text" class="form-control mb-2" id="assignmentSubject4" placeholder="Assignment name">
+                                            <input type="number" class="form-control" id="assignmentMarks4" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Assignment 5</label>
+                                            <input type="text" class="form-control mb-2" id="assignmentSubject5" placeholder="Assignment name">
+                                            <input type="number" class="form-control" id="assignmentMarks5" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Assignment 6</label>
+                                            <input type="text" class="form-control mb-2" id="assignmentSubject6" placeholder="Assignment name">
+                                            <input type="number" class="form-control" id="assignmentMarks6" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Seminar Marks -->
+                            <div class="marks-type-content" id="seminarMarks">
+                                <div class="form-group">
+                                    <label class="form-label">Seminar Marks (Max 6 subjects)</label>
+                                    <div class="subject-grid">
+                                        <div class="subject-input-group">
+                                            <label>Seminar 1</label>
+                                            <input type="text" class="form-control mb-2" id="seminarSubject1" placeholder="Seminar topic">
+                                            <input type="number" class="form-control" id="seminarMarks1" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Seminar 2</label>
+                                            <input type="text" class="form-control mb-2" id="seminarSubject2" placeholder="Seminar topic">
+                                            <input type="number" class="form-control" id="seminarMarks2" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Seminar 3</label>
+                                            <input type="text" class="form-control mb-2" id="seminarSubject3" placeholder="Seminar topic">
+                                            <input type="number" class="form-control" id="seminarMarks3" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Seminar 4</label>
+                                            <input type="text" class="form-control mb-2" id="seminarSubject4" placeholder="Seminar topic">
+                                            <input type="number" class="form-control" id="seminarMarks4" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Seminar 5</label>
+                                            <input type="text" class="form-control mb-2" id="seminarSubject5" placeholder="Seminar topic">
+                                            <input type="number" class="form-control" id="seminarMarks5" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>Seminar 6</label>
+                                            <input type="text" class="form-control mb-2" id="seminarSubject6" placeholder="Seminar topic">
+                                            <input type="number" class="form-control" id="seminarMarks6" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-
-
-
-
-                            <div class="form-col">
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-plus"></i> Add Student
                                 </button>
@@ -1533,17 +1640,17 @@ body {
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Roll No</th>
                                         <th>Name</th>
-                                        <th>Theory</th>
-                                        <th>Practical</th>
-                                        <th>Assignment</th>
-                                        <th>Seminar</th>
+                                        <th>Department</th>
+                                        <th>Semester</th>
+                                        <th>House Test</th>
+                                        <th>Subjects</th>
+                                        <th>Marks</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -1554,9 +1661,7 @@ body {
                         </div>
                     </div>
                 </div>
-
-                
-
+            </div>
 
             <!-- Subjects Section -->
             <div class="section-content" id="subjectsSection">
@@ -1958,10 +2063,6 @@ const profilePictureUpload = document.getElementById('profilePictureUpload');
 const settingsAvatar = document.getElementById('settingsAvatar');
 const marksTypeTabs = document.querySelectorAll('.marks-type-tab');
 const marksTypeContents = document.querySelectorAll('.marks-type-content');
-
-
-
-
 
 function initApp() {
     loadData();
@@ -2417,51 +2518,69 @@ function addStudent(e) {
 
 // Render students table (updated to show all marks types)
 function renderStudentsTable() {
-    // In renderStudentsTable() function, update the table header and rows:
-const row = document.createElement('tr');
-row.innerHTML = `
-    <td>${student.rollNo}</td>
-    <td>${student.name}</td>
-    <td>${student.department}</td>
-    <td>${student.semester ? student.semester + ' Semester' : '-'}</td>
-    <td>${student.houseTest ? student.houseTest.replace('house', 'House Test ') : '-'}</td>
-    <td>
-        ${student.subjects.length > 0 ? student.subjects.join(', ') : '-'}
-        ${student.practicals.length > 0 ? '<br>Practicals: ' + student.practicals.join(', ') : ''}
-        ${student.assignments.length > 0 ? '<br>Assignments: ' + student.assignments.join(', ') : ''}
-        ${student.seminars.length > 0 ? '<br>Seminars: ' + student.seminars.join(', ') : ''}
-    </td>
-    <td>
-        ${student.marks.map((mark, i) => 
-            `<span class="badge ${mark >= 80 ? 'badge-success' : mark >= 50 ? 'badge-warning' : 'badge-danger'}">
-                Theory: ${mark}
-            </span>`
-        ).join(' ')}
-        ${student.practicalMarks.map((mark, i) => 
-            `<span class="badge ${mark >= 80 ? 'badge-success' : mark >= 50 ? 'badge-warning' : 'badge-danger'}">
-                Practical: ${mark}
-            </span>`
-        ).join(' ')}
-        ${student.assignmentMarks.map((mark, i) => 
-            `<span class="badge ${mark >= 80 ? 'badge-success' : mark >= 50 ? 'badge-warning' : 'badge-danger'}">
-                Assignment: ${mark}
-            </span>`
-        ).join(' ')}
-        ${student.seminarMarks.map((mark, i) => 
-            `<span class="badge ${mark >= 80 ? 'badge-success' : mark >= 50 ? 'badge-warning' : 'badge-danger'}">
-                Seminar: ${mark}
-            </span>`
-        ).join(' ')}
-    </td>
-    <td>
-        <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
-            <i class="fas fa-edit"></i> Edit
-        </button>
-        <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
-            <i class="fas fa-trash"></i> Delete
-        </button>
-    </td>
-`;
+    studentsTableBody.innerHTML = '';
+    
+    if (students.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td colspan="8" style="text-align: center; color: var(--gray);">
+                No student records found. Add some students to get started.
+            </td>
+        `;
+        studentsTableBody.appendChild(row);
+        return;
+    }
+    
+    students.forEach((student, index) => {
+        const row = document.createElement('tr');
+        
+        // Create cells for each property
+        row.innerHTML = `
+            <td>${student.rollNo}</td>
+            <td>${student.name}</td>
+            <td>${student.department}</td>
+            <td>${student.semester ? student.semester + ' Semester' : '-'}</td>
+            <td>${student.houseTest ? student.houseTest.replace('house', 'House Test ') : '-'}</td>
+            <td>
+                ${student.subjects.length > 0 ? student.subjects.join(', ') : '-'}
+                ${student.practicals.length > 0 ? '<br>Practicals: ' + student.practicals.join(', ') : ''}
+                ${student.assignments.length > 0 ? '<br>Assignments: ' + student.assignments.join(', ') : ''}
+                ${student.seminars.length > 0 ? '<br>Seminars: ' + student.seminars.join(', ') : ''}
+            </td>
+            <td>
+                ${student.marks.map((mark, i) => 
+                    `<span class="badge ${mark >= 80 ? 'badge-success' : mark >= 50 ? 'badge-warning' : 'badge-danger'}">
+                        Theory: ${mark}
+                    </span>`
+                ).join(' ')}
+                ${student.practicalMarks.map((mark, i) => 
+                    `<span class="badge ${mark >= 80 ? 'badge-success' : mark >= 50 ? 'badge-warning' : 'badge-danger'}">
+                        Practical: ${mark}
+                    </span>`
+                ).join(' ')}
+                ${student.assignmentMarks.map((mark, i) => 
+                    `<span class="badge ${mark >= 80 ? 'badge-success' : mark >= 50 ? 'badge-warning' : 'badge-danger'}">
+                        Assignment: ${mark}
+                    </span>`
+                ).join(' ')}
+                ${student.seminarMarks.map((mark, i) => 
+                    `<span class="badge ${mark >= 80 ? 'badge-success' : mark >= 50 ? 'badge-warning' : 'badge-danger'}">
+                        Seminar: ${mark}
+                    </span>`
+                ).join(' ')}
+            </td>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </td>
+        `;
+        
+        studentsTableBody.appendChild(row);
+    });
 }
 
 // Filter students
@@ -3516,45 +3635,124 @@ function logout() {
     }
 }
 
+// Update dashboard stats
+function updateDashboardStats() {
+    // Total students
+    document.getElementById('totalStudents').textContent = students.length;
+    
+    // Total subjects
+    document.getElementById('totalSubjects').textContent = subjects.length;
+    
+    // Average marks
+    if (students.length > 0) {
+        let totalMarks = 0;
+        let totalSubjects = 0;
+        
+        students.forEach(student => {
+            student.marks.forEach(mark => {
+                totalMarks += mark;
+                totalSubjects++;
+            });
+            
+            student.practicalMarks.forEach(mark => {
+                if (mark) {
+                    totalMarks += mark;
+                    totalSubjects++;
+                }
+            });
+            
+            student.assignmentMarks.forEach(mark => {
+                if (mark) {
+                    totalMarks += mark;
+                    totalSubjects++;
+                }
+            });
+            
+            student.seminarMarks.forEach(mark => {
+                if (mark) {
+                    totalMarks += mark;
+                    totalSubjects++;
+                }
+            });
+        });
+        
+        const avgMarks = totalSubjects > 0 ? (totalMarks / totalSubjects) : 0;
+        document.getElementById('avgMarks').textContent = avgMarks.toFixed(1) + '%';
+    }
+    
+    // Unread notifications
+    const unreadCount = notifications.filter(n => !n.read).length;
+    document.getElementById('unreadNotif').textContent = unreadCount;
+    
+    // Update recent activity
+    updateRecentActivity();
+}
 
+// Update recent activity
+function updateRecentActivity() {
+    const activityList = document.getElementById('activityList');
+    activityList.innerHTML = '';
+    
+    if (students.length === 0 && notifications.length === 0) {
+        activityList.innerHTML = '<div class="activity-item"><p>No recent activity</p></div>';
+        return;
+    }
+    
+    // Add student additions as activities
+    const recentStudents = students.slice(0, 3).reverse();
+    recentStudents.forEach(student => {
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        activityItem.innerHTML = `
+            <div class="activity-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="activity-content">
+                <p>Added ${student.name} (${student.rollNo})</p>
+                <small class="activity-time">${formatActivityTime(student.addedDate)}</small>
+            </div>
+        `;
+        activityList.appendChild(activityItem);
+    });
+    
+    // Add notifications as activities
+    const recentNotifs = notifications.slice(0, 3);
+    recentNotifs.forEach(notif => {
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        activityItem.innerHTML = `
+            <div class="activity-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="activity-content">
+                <p>${notif.title}: ${notif.message}</p>
+                <small class="activity-time">${notif.time}</small>
+            </div>
+        `;
+        activityList.appendChild(activityItem);
+    });
+}
 
+// Format activity time
+function formatActivityTime(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now - date;
+    
+    const minutes = Math.floor(diff / 60000);
+    if (minutes < 60) return `${minutes} min ago`;
+    
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hr ago`;
+    
+    const days = Math.floor(hours / 24);
+    if (days < 7) return `${days} day${days === 1 ? '' : 's'} ago`;
+    
+    return date.toLocaleDateString();
+}
 
-        // Update dashboard stats
-        function updateDashboardStats() {
-            // Total students
-            document.getElementById('totalStudents').textContent = students.length;
-
-            // Average marks
-            if (students.length > 0) {
-                let totalMarks = 0;
-                let count = 0;
-
-                students.forEach(student => {
-                    if (student.theoryMarks) {
-                        totalMarks += parseInt(student.theoryMarks);
-                        count++;
-                    }
-                    if (student.practicalMarks) {
-                        totalMarks += parseInt(student.practicalMarks);
-                        count++;
-                    }
-                    if (student.assignmentMarks) {
-                        totalMarks += parseInt(student.assignmentMarks);
-                        count++;
-                    }
-                    if (student.seminarMarks) {
-                        totalMarks += parseInt(student.seminarMarks);
-                        count++;
-                    }
-                });
-
-                const avgMarks = count > 0 ? (totalMarks / count) : 0;
-                document.getElementById('avgMarks').textContent = avgMarks.toFixed(1) + '%';
-            }
-        }
-
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initApp);
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', initApp);
 
 // Make functions available globally for inline event handlers
 window.editStudent = editStudent;
