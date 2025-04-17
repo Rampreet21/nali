@@ -1,0 +1,153 @@
+First, remove the practical marks input field from the form:
+
+<div class="subject-input-group">
+    <label>1. Theory</label>
+    <input type="number" class="form-control" id="marks1" placeholder="Marks"
+        min="0" max="100">
+</div>
+<div class="subject-input-group">
+    <label>2. Assignment</label>
+    <input type="number" class="form-control" id="marks3" placeholder="Marks"
+        min="0" max="100">
+</div>
+<div class="subject-input-group">
+    <label>3. Seminar</label>
+    <input type="number" class="form-control" id="marks4" placeholder="Marks"
+        min="0" max="100">
+</div>
+
+
+
+
+Update the student records table header to remove the practical column:
+
+<thead>
+    <tr>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Theory</th>
+        <th>Assignment</th>
+        <th>Seminar</th>
+        <th>Actions</th>
+    </tr>
+</thead>
+
+
+Update the JavaScript functions that handle student data:
+
+In the addStudent function, remove the practical marks reference:
+
+const student = {
+    rollNo,
+    name,
+    semester,
+    houseTest,
+    theoryMarks,
+    assignmentMarks,
+    seminarMarks,
+    addedDate: new Date().toISOString()
+};
+
+
+
+Update the renderStudentsTable function to remove practical marks display:
+function renderStudentsTable() {
+    studentsTableBody.innerHTML = '';
+
+    if (students.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td colspan="6" style="text-align: center; color: var(--gray);">
+                No student records found. Add some students to get started.
+            </td>
+        `;
+        studentsTableBody.appendChild(row);
+        return;
+    }
+
+    students.forEach((student, index) => {
+        const row = document.createElement('tr');
+
+        // Helper function to create mark cell with color coding
+        const createMarkCell = (mark) => {
+            const cell = document.createElement('td');
+            if (mark) {
+                const numMark = parseInt(mark);
+                cell.textContent = numMark;
+                cell.className = numMark >= 80 ? 'text-success' :
+                    numMark >= 50 ? 'text-warning' : 'text-danger';
+            } else {
+                cell.textContent = '-';
+                cell.className = 'text-muted';
+            }
+            return cell;
+        };
+
+        // Create cells for basic info
+        const rollNoCell = document.createElement('td');
+        rollNoCell.textContent = student.rollNo;
+        row.appendChild(rollNoCell);
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = student.name;
+        row.appendChild(nameCell);
+
+        // Add mark cells (without practical)
+        row.appendChild(createMarkCell(student.theoryMarks));
+        row.appendChild(createMarkCell(student.assignmentMarks));
+        row.appendChild(createMarkCell(student.seminarMarks));
+
+        // Actions cell
+        const actionsCell = document.createElement('td');
+        actionsCell.innerHTML = `
+            <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        `;
+        row.appendChild(actionsCell);
+
+        studentsTableBody.appendChild(row);
+    });
+}
+
+
+
+
+
+
+Update the updateDashboardStats function to remove practical marks calculation:
+function updateDashboardStats() {
+    // Total students
+    document.getElementById('totalStudents').textContent = students.length;
+
+    // Average marks
+    if (students.length > 0) {
+        let totalMarks = 0;
+        let count = 0;
+
+        students.forEach(student => {
+            if (student.theoryMarks) {
+                totalMarks += parseInt(student.theoryMarks);
+                count++;
+            }
+            if (student.assignmentMarks) {
+                totalMarks += parseInt(student.assignmentMarks);
+                count++;
+            }
+            if (student.seminarMarks) {
+                totalMarks += parseInt(student.seminarMarks);
+                count++;
+            }
+        });
+
+        const avgMarks = count > 0 ? (totalMarks / count) : 0;
+        document.getElementById('avgMarks').textContent = avgMarks.toFixed(1) + '%';
+    }
+}
+
+
+
+
