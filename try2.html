@@ -240,20 +240,16 @@
                                                 min="0" max="100">
                                         </div>
                                         <div class="subject-input-group">
-                                            <label>2. Practical</label>
-                                            <input type="number" class="form-control" id="marks2" placeholder="Marks"
-                                                min="0" max="100">
-                                        </div>
-                                        <div class="subject-input-group">
-                                            <label>3. Assignment</label>
+                                            <label>2. Assignment</label>
                                             <input type="number" class="form-control" id="marks3" placeholder="Marks"
                                                 min="0" max="100">
                                         </div>
                                         <div class="subject-input-group">
-                                            <label>4. Seminar</label>
+                                            <label>3. Seminar</label>
                                             <input type="number" class="form-control" id="marks4" placeholder="Marks"
                                                 min="0" max="100">
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -286,7 +282,6 @@
                                         <th>Roll No</th>
                                         <th>Name</th>
                                         <th>Theory</th>
-                                        <th>Practical</th>
                                         <th>Assignment</th>
                                         <th>Seminar</th>
                                         <th>Actions</th>
@@ -506,7 +501,6 @@
                 semester,
                 houseTest,
                 theoryMarks,
-                practicalMarks,
                 assignmentMarks,
                 seminarMarks,
                 addedDate: new Date().toISOString()
@@ -519,10 +513,11 @@
             showToast('Student record added successfully!');
         }
 
+        
         // Render students table
         function renderStudentsTable() {
             studentsTableBody.innerHTML = '';
-
+        
             if (students.length === 0) {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -533,48 +528,51 @@
                 studentsTableBody.appendChild(row);
                 return;
             }
-
+        
             students.forEach((student, index) => {
                 const row = document.createElement('tr');
-
-                // Create cells for each property
-                row.innerHTML = `
-                    <td>${student.rollNo}</td>
-                    <td>${student.name}</td>
-                    <td>${student.semester} Semester</td>
-                    <td>${student.houseTest ? student.houseTest.replace('house', 'House Test ') : '-'}</td>
-                    <td>
-                        ${student.theoryMarks ? `
-                            <span class="badge ${student.theoryMarks >= 80 ? 'badge-success' : student.theoryMarks >= 50 ? 'badge-warning' : 'badge-danger'}">
-                                Theory: ${student.theoryMarks}
-                            </span>
-                        ` : ''}
-                        ${student.practicalMarks ? `
-                            <span class="badge ${student.practicalMarks >= 80 ? 'badge-success' : student.practicalMarks >= 50 ? 'badge-warning' : 'badge-danger'}">
-                                Practical: ${student.practicalMarks}
-                            </span>
-                        ` : ''}
-                        ${student.assignmentMarks ? `
-                            <span class="badge ${student.assignmentMarks >= 80 ? 'badge-success' : student.assignmentMarks >= 50 ? 'badge-warning' : 'badge-danger'}">
-                                Assignment: ${student.assignmentMarks}
-                            </span>
-                        ` : ''}
-                        ${student.seminarMarks ? `
-                            <span class="badge ${student.seminarMarks >= 80 ? 'badge-success' : student.seminarMarks >= 50 ? 'badge-warning' : 'badge-danger'}">
-                                Seminar: ${student.seminarMarks}
-                            </span>
-                        ` : ''}
-                    </td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
+        
+                // Helper function to create mark cell with color coding
+                const createMarkCell = (mark) => {
+                    const cell = document.createElement('td');
+                    if (mark) {
+                        const numMark = parseInt(mark);
+                        cell.textContent = numMark;
+                        cell.className = numMark >= 80 ? 'text-success' :
+                            numMark >= 50 ? 'text-warning' : 'text-danger';
+                    } else {
+                        cell.textContent = '-';
+                        cell.className = 'text-muted';
+                    }
+                    return cell;
+                };
+        
+                // Create cells for basic info
+                const rollNoCell = document.createElement('td');
+                rollNoCell.textContent = student.rollNo;
+                row.appendChild(rollNoCell);
+        
+                const nameCell = document.createElement('td');
+                nameCell.textContent = student.name;
+                row.appendChild(nameCell);
+        
+                // Add mark cells (without practical)
+                row.appendChild(createMarkCell(student.theoryMarks));
+                row.appendChild(createMarkCell(student.assignmentMarks));
+                row.appendChild(createMarkCell(student.seminarMarks));
+        
+                // Actions cell
+                const actionsCell = document.createElement('td');
+                actionsCell.innerHTML = `
+                    <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
                 `;
-
+                row.appendChild(actionsCell);
+        
                 studentsTableBody.appendChild(row);
             });
         }
@@ -834,19 +832,15 @@
         function updateDashboardStats() {
             // Total students
             document.getElementById('totalStudents').textContent = students.length;
-
+        
             // Average marks
             if (students.length > 0) {
                 let totalMarks = 0;
                 let count = 0;
-
+        
                 students.forEach(student => {
                     if (student.theoryMarks) {
                         totalMarks += parseInt(student.theoryMarks);
-                        count++;
-                    }
-                    if (student.practicalMarks) {
-                        totalMarks += parseInt(student.practicalMarks);
                         count++;
                     }
                     if (student.assignmentMarks) {
@@ -858,7 +852,7 @@
                         count++;
                     }
                 });
-
+        
                 const avgMarks = count > 0 ? (totalMarks / count) : 0;
                 document.getElementById('avgMarks').textContent = avgMarks.toFixed(1) + '%';
             }
