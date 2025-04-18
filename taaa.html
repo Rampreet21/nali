@@ -1505,6 +1505,7 @@
         const saveAllDataBtn = document.getElementById('saveAllData');
         const clearFormBtn = document.getElementById('clearForm');
         const studentsTableBody = document.getElementById('studentsTableBody');
+        const practicalTableBody = document.getElementById('practicalTableBody');
         const userAvatar = document.getElementById('userAvatar');
         const profileAvatar = document.getElementById('profileAvatar');
         const profileName = document.getElementById('profileName');
@@ -1520,6 +1521,13 @@
         const filterHouseTest = document.getElementById('filterHouseTest');
         const logoutBtn = document.getElementById('logoutBtn');
         const teacherGreeting = document.getElementById('teacherGreeting');
+        const marksTypeTabs = document.querySelectorAll('.marks-type-tab');
+        const marksTypeContents = document.querySelectorAll('.marks-type-content');
+        const practicalFileInput = document.getElementById('practicalFile');
+        const vivaMarksInput = document.getElementById('vivaMarks');
+        const performanceMarksInput = document.getElementById('performanceMarks');
+        const attendanceMarksInput = document.getElementById('attendanceMarks');
+        const totalPracticalMarksInput = document.getElementById('totalPracticalMarks');
 
         function initApp() {
             loadData();
@@ -1549,6 +1557,7 @@
             if (savedStudents) {
                 students = JSON.parse(savedStudents);
                 renderStudentsTable();
+                renderPracticalTable();
             }
         }
 
@@ -1576,18 +1585,40 @@
                 });
             });
 
-            // House test options
-            houseTestOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    houseTestOptions.forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedHouseTest.value = option.dataset.test;
+            // Marks type tabs
+            marksTypeTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    switchMarksTab(tabId);
                 });
             });
 
-            // Filters
-            filterSemester.addEventListener('change', filterStudents);
-            filterHouseTest.addEventListener('change', filterStudents);
+            // Practical marks calculation
+            [practicalFileInput, vivaMarksInput, performanceMarksInput, attendanceMarksInput].forEach(input => {
+                input.addEventListener('input', calculatePracticalTotal);
+            });
+        }
+
+        // Switch between theory and practical marks tabs
+        function switchMarksTab(tabId) {
+            marksTypeTabs.forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabId);
+            });
+
+            marksTypeContents.forEach(content => {
+                content.classList.toggle('active', content.id === tabId);
+            });
+        }
+
+        // Calculate practical total marks
+        function calculatePracticalTotal() {
+            const practicalFile = parseFloat(practicalFileInput.value) || 0;
+            const viva = parseFloat(vivaMarksInput.value) || 0;
+            const performance = parseFloat(performanceMarksInput.value) || 0;
+            const attendance = parseFloat(attendanceMarksInput.value) || 0;
+            
+            const total = practicalFile + viva + performance + attendance;
+            totalPracticalMarksInput.value = total > 0 ? total : '';
         }
 
         // Show auth modal
@@ -1667,21 +1698,31 @@
             const rollNo = document.getElementById('studentRollNo').value;
             const name = document.getElementById('studentName').value;
             const semester = document.getElementById('studentSemester').value;
+            const department = document.getElementById('studentDepartment').value;
+            const subject = document.getElementById('studentSubject').value;
         
-            if (!rollNo || !name || !semester) {
+            if (!rollNo || !name || !semester || !department || !subject) {
                 showToast('Please fill all required fields', 'error');
                 return;
             }
         
-            // Collect marks
+            // Collect theory marks
             const houseTest1 = document.getElementById('houseTest1').value;
             const houseTest2 = document.getElementById('houseTest2').value;
             const houseTest3 = document.getElementById('houseTest3').value;
             const assignmentMarks = document.getElementById('assignmentMarks').value;
             const seminarMarks = document.getElementById('seminarMarks').value;
         
-            if (!houseTest1 && !houseTest2 && !houseTest3 && !assignmentMarks && !seminarMarks) {
-                showToast('Please add at least one mark', 'error');
+            // Collect practical marks
+            const practicalFile = document.getElementById('practicalFile').value;
+            const vivaMarks = document.getElementById('vivaMarks').value;
+            const performanceMarks = document.getElementById('performanceMarks').value;
+            const attendanceMarks = document.getElementById('attendanceMarks').value;
+            const totalPracticalMarks = document.getElementById('totalPracticalMarks').value;
+        
+            if (!houseTest1 && !houseTest2 && !houseTest3 && !assignmentMarks && !seminarMarks && 
+                !practicalFile && !vivaMarks && !performanceMarks && !attendanceMarks) {
+                showToast('Please add at least one mark (theory or practical)', 'error');
                 return;
             }
         
@@ -1689,23 +1730,30 @@
                 rollNo,
                 name,
                 semester,
+                department,
+                subject,
                 houseTest1,
                 houseTest2,
                 houseTest3,
                 assignmentMarks,
                 seminarMarks,
+                practicalFile,
+                vivaMarks,
+                performanceMarks,
+                attendanceMarks,
+                totalPracticalMarks,
                 addedDate: new Date().toISOString()
             };
         
             students.push(student);
             renderStudentsTable();
+            renderPracticalTable();
             clearStudentForm();
         
             showToast('Student record added successfully!');
         }
 
-
-        // Render students table
+        // Render students table (theory marks)
         function renderStudentsTable() {
             studentsTableBody.innerHTML = '';
         
@@ -1721,6 +1769,12 @@
             }
         
             students.forEach((student, index) => {
+                // Skip if student has no theory marks
+                if (!student.houseTest1 && !student.houseTest2 && !student.houseTest3 && 
+                    !student.assignmentMarks && !student.seminarMarks) {
+                    return;
+                }
+                
                 const row = document.createElement('tr');
         
                 // Helper function to create mark cell with color coding
@@ -1738,7 +1792,7 @@
                     return cell;
                 };
                 
-                // Calculate total marks
+                // Calculate total theory marks
                 const calculateTotalMarks = () => {
                     let total = 0;
                     if (student.houseTest1) total += parseInt(student.houseTest1);
@@ -1764,7 +1818,7 @@
                 nameCell.textContent = student.name;
                 row.appendChild(nameCell);
         
-                // Add mark cells
+                // Add theory mark cells
                 row.appendChild(createMarkCell(student.houseTest1));
                 row.appendChild(createMarkCell(student.houseTest2));
                 row.appendChild(createMarkCell(student.houseTest3));
@@ -1793,6 +1847,101 @@
                 row.appendChild(actionsCell);
         
                 studentsTableBody.appendChild(row);
+            });
+        }
+
+        // Render practical marks table
+        function renderPracticalTable() {
+            practicalTableBody.innerHTML = '';
+        
+            if (students.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="9" style="text-align: center; color: var(--gray);">
+                        No practical marks records found. Add some students to get started.
+                    </td>
+                `;
+                practicalTableBody.appendChild(row);
+                return;
+            }
+        
+            students.forEach((student, index) => {
+                // Skip if student has no practical marks
+                if (!student.practicalFile && !student.vivaMarks && !student.performanceMarks && 
+                    !student.attendanceMarks) {
+                    return;
+                }
+                
+                const row = document.createElement('tr');
+        
+                // Helper function to create mark cell with color coding
+                const createMarkCell = (mark) => {
+                    const cell = document.createElement('td');
+                    if (mark) {
+                        const numMark = parseInt(mark);
+                        cell.textContent = numMark;
+                        cell.className = numMark >= 80 ? 'text-success' :
+                            numMark >= 50 ? 'text-warning' : 'text-danger';
+                    } else {
+                        cell.textContent = '-';
+                        cell.className = 'text-muted';
+                    }
+                    return cell;
+                };
+                
+                // Calculate total practical marks
+                const calculateTotalPracticalMarks = () => {
+                    let total = 0;
+                    if (student.practicalFile) total += parseInt(student.practicalFile);
+                    if (student.vivaMarks) total += parseInt(student.vivaMarks);
+                    if (student.performanceMarks) total += parseInt(student.performanceMarks);
+                    if (student.attendanceMarks) total += parseInt(student.attendanceMarks);
+                    return total;
+                };
+                
+                const totalPracticalMarks = calculateTotalPracticalMarks();
+                
+                // Create cells for basic info
+                const snCell = document.createElement('td');
+                snCell.textContent = index + 1;
+                row.appendChild(snCell);
+                
+                const rollNoCell = document.createElement('td');
+                rollNoCell.textContent = student.rollNo;
+                row.appendChild(rollNoCell);
+        
+                const nameCell = document.createElement('td');
+                nameCell.textContent = student.name;
+                row.appendChild(nameCell);
+        
+                // Add practical mark cells
+                row.appendChild(createMarkCell(student.practicalFile));
+                row.appendChild(createMarkCell(student.vivaMarks));
+                row.appendChild(createMarkCell(student.performanceMarks));
+                row.appendChild(createMarkCell(student.attendanceMarks));
+                
+                // Add total practical marks cell
+                const totalCell = document.createElement('td');
+                totalCell.textContent = totalPracticalMarks;
+                // Apply color coding based on percentage (assuming max possible is 400)
+                const percentage = (totalPracticalMarks / 400) * 100;
+                totalCell.className = percentage >= 80 ? 'text-success' :
+                    percentage >= 50 ? 'text-warning' : 'text-danger';
+                row.appendChild(totalCell);
+        
+                // Actions cell
+                const actionsCell = document.createElement('td');
+                actionsCell.innerHTML = `
+                    <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                `;
+                row.appendChild(actionsCell);
+        
+                practicalTableBody.appendChild(row);
             });
         }
 
@@ -1829,43 +1978,60 @@
             document.getElementById('studentRollNo').value = student.rollNo;
             document.getElementById('studentName').value = student.name;
             document.getElementById('studentSemester').value = student.semester || '';
+            document.getElementById('studentDepartment').value = student.department || '';
+            document.getElementById('studentSubject').value = student.subject || '';
         
-            // Fill marks
+            // Fill theory marks
             document.getElementById('houseTest1').value = student.houseTest1 || '';
             document.getElementById('houseTest2').value = student.houseTest2 || '';
             document.getElementById('houseTest3').value = student.houseTest3 || '';
             document.getElementById('assignmentMarks').value = student.assignmentMarks || '';
             document.getElementById('seminarMarks').value = student.seminarMarks || '';
         
+            // Fill practical marks
+            document.getElementById('practicalFile').value = student.practicalFile || '';
+            document.getElementById('vivaMarks').value = student.vivaMarks || '';
+            document.getElementById('performanceMarks').value = student.performanceMarks || '';
+            document.getElementById('attendanceMarks').value = student.attendanceMarks || '';
+            document.getElementById('totalPracticalMarks').value = student.totalPracticalMarks || '';
+        
             // Remove the student from the array (will be re-added when saved)
             students.splice(index, 1);
         
             showToast('Student record loaded for editing', 'success');
         }
-        
 
         // Delete student
         function deleteStudent(index) {
             if (confirm('Are you sure you want to delete this student record?')) {
                 students.splice(index, 1);
                 renderStudentsTable();
+                renderPracticalTable();
                 showToast('Student record deleted successfully!');
             }
         }
 
         // Clear student form
-        
         function clearStudentForm() {
             document.getElementById('studentRollNo').value = '';
             document.getElementById('studentName').value = '';
             document.getElementById('studentSemester').value = '';
+            document.getElementById('studentDepartment').value = '';
+            document.getElementById('studentSubject').value = '';
         
-            // Clear all marks fields
+            // Clear theory marks fields
             document.getElementById('houseTest1').value = '';
             document.getElementById('houseTest2').value = '';
             document.getElementById('houseTest3').value = '';
             document.getElementById('assignmentMarks').value = '';
             document.getElementById('seminarMarks').value = '';
+        
+            // Clear practical marks fields
+            document.getElementById('practicalFile').value = '';
+            document.getElementById('vivaMarks').value = '';
+            document.getElementById('performanceMarks').value = '';
+            document.getElementById('attendanceMarks').value = '';
+            document.getElementById('totalPracticalMarks').value = '';
         }
 
         // Save all student data

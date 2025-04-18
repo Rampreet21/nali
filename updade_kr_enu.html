@@ -1343,7 +1343,7 @@
 
                             <div class="marks-type-content active" id="theoryMarks">
                                 <div class="form-group">
-                                    <label class="form-label"> Marks </label>
+                                    <label class="form-label">Theory Marks </label>
                                     <div class="subject-grid">
                                         <div class="subject-input-group">
                                             <label>1. House Test 1</label>
@@ -1400,6 +1400,7 @@
                                
                                         <thead>
                                             <tr>
+                                                <th>S/N</th>
                                                 <th>Roll No</th>
                                                 <th>Name</th>
                                                 <th>House Test 1</th>
@@ -1407,6 +1408,7 @@
                                                 <th>House Test 3</th>
                                                 <th>Assignment</th>
                                                 <th>Seminar</th>
+                                                <th>Total Marks</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -1646,7 +1648,7 @@
             if (students.length === 0) {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td colspan="8" style="text-align: center; color: var(--gray);">
+                    <td colspan="10" style="text-align: center; color: var(--gray);">
                         No student records found. Add some students to get started.
                     </td>
                 `;
@@ -1671,8 +1673,25 @@
                     }
                     return cell;
                 };
-        
+                
+                // Calculate total marks
+                const calculateTotalMarks = () => {
+                    let total = 0;
+                    if (student.houseTest1) total += parseInt(student.houseTest1);
+                    if (student.houseTest2) total += parseInt(student.houseTest2);
+                    if (student.houseTest3) total += parseInt(student.houseTest3);
+                    if (student.assignmentMarks) total += parseInt(student.assignmentMarks);
+                    if (student.seminarMarks) total += parseInt(student.seminarMarks);
+                    return total;
+                };
+                
+                const totalMarks = calculateTotalMarks();
+                
                 // Create cells for basic info
+                const snCell = document.createElement('td');
+                snCell.textContent = index + 1;
+                row.appendChild(snCell);
+                
                 const rollNoCell = document.createElement('td');
                 rollNoCell.textContent = student.rollNo;
                 row.appendChild(rollNoCell);
@@ -1687,6 +1706,15 @@
                 row.appendChild(createMarkCell(student.houseTest3));
                 row.appendChild(createMarkCell(student.assignmentMarks));
                 row.appendChild(createMarkCell(student.seminarMarks));
+                
+                // Add total marks cell
+                const totalCell = document.createElement('td');
+                totalCell.textContent = totalMarks;
+                // Apply color coding based on percentage (assuming max possible is 500)
+                const percentage = (totalMarks / 500) * 100;
+                totalCell.className = percentage >= 80 ? 'text-success' :
+                    percentage >= 50 ? 'text-warning' : 'text-danger';
+                row.appendChild(totalCell);
         
                 // Actions cell
                 const actionsCell = document.createElement('td');

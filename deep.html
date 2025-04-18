@@ -1,295 +1,526 @@
-<!-- First, remove the house test selection section (this part):
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="form-col">
-    <div class="form-group">
-        <label class="form-label">House Test</label>
-        <div class="house-test-options">
-            <div class="house-test-option" data-test="house1">House Test 1</div>
-            <div class="house-test-option" data-test="house2">House Test 2</div>
-            <div class="house-test-option" data-test="house3">House Test 3</div>
-        </div>
-        <input type="hidden" id="selectedHouseTest">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Sessional Marks - Teacher Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Add any additional CSS styles you need here */
+        .marks-type-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .marks-type-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #f5f5f5;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .marks-type-tab.active {
+            background: #4e73df;
+            color: white;
+        }
+        .marks-type-content {
+            display: none;
+        }
+        .marks-type-content.active {
+            display: block;
+        }
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .subject-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Previous HTML content remains the same until the student form section -->
+
+            <!-- Students Section -->
+            <div class="section-content" id="studentsSection">
+                <!-- Student Management Card -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-graduate"></i> Student Marks Management</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="studentForm">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="studentRollNo">Roll Number</label>
+                                        <input type="text" class="form-control" id="studentRollNo"
+                                            placeholder="Enter roll number">
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="studentName">Student Name</label>
+                                        <input type="text" class="form-control" id="studentName"
+                                            placeholder="Enter student name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="">Department</label>
+                                        <select class="form-control" id="">
+                                            <option value="">Select Department</option>
+                                            <option value="Computer Science">Computer Science</option>
+                                            <option value="Electrical Engineering">Electrical Engineering</option>
+                                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                            <option value="Civil Engineering">Civil Engineering</option>
+                                            <option value="Business Administration">Business Administration</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="studentSemester">Semester</label>
+                                        <select class="form-control" id="studentSemester">
+                                            <option value="">Select Semester</option>
+                                            <option value="3">3rd Semester</option>
+                                            <option value="4">4th Semester</option>
+                                            <option value="5">5th Semester</option>
+                                            <option value="6">6th Semester</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for=" ">Subject</label>
+                                        <select class="form-control" id="">
+                                            <option value="">Select Subject</option>
+                                            <option value="1">Java</option>
+                                            <option value="2">DSUC</option>
+                                            <option value="3">CA</option>
+                                            <option value="4">GSED</option>
+                                            <option value="5">CNS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Marks Type Tabs -->
+                            <div class="marks-type-tabs">
+                                <div class="marks-type-tab active" data-tab="theory">Theory Marks</div>
+                                <div class="marks-type-tab" data-tab="practical">Practical Marks</div>
+                            </div>
+
+                            <!-- Theory Marks Section -->
+                            <div class="marks-type-content active" id="theoryMarks">
+                                <div class="form-group">
+                                    <label class="form-label">Theory Marks</label>
+                                    <div class="subject-grid">
+                                        <div class="subject-input-group">
+                                            <label>1. House Test 1</label>
+                                            <input type="number" class="form-control" id="houseTest1" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>2. House Test 2</label>
+                                            <input type="number" class="form-control" id="houseTest2" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>3. House Test 3</label>
+                                            <input type="number" class="form-control" id="houseTest3" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>4. Assignment</label>
+                                            <input type="number" class="form-control" id="assignmentMarks" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>5. Seminar</label>
+                                            <input type="number" class="form-control" id="seminarMarks" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Practical Marks Section -->
+                            <div class="marks-type-content" id="practicalMarks">
+                                <div class="form-group">
+                                    <label class="form-label">Practical Marks</label>
+                                    <div class="subject-grid">
+                                        <div class="subject-input-group">
+                                            <label>1. Practical File</label>
+                                            <input type="number" class="form-control" id="practicalFile" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>2. Viva</label>
+                                            <input type="number" class="form-control" id="vivaMarks" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>3. Performance</label>
+                                            <input type="number" class="form-control" id="performanceMarks" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>4. Attendance</label>
+                                            <input type="number" class="form-control" id="attendanceMarks" placeholder="Marks"
+                                                min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>5. Total Practical Marks</label>
+                                            <input type="number" class="form-control" id="totalPracticalMarks" placeholder="Marks"
+                                                min="0" max="100" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add Student
+                                </button>
+                                <button type="button" class="btn btn-success" id="saveAllData">
+                                    <i class="fas fa-save"></i> Save All Data
+                                </button>
+                                <button type="button" class="btn btn-warning" id="clearForm">
+                                    <i class="fas fa-eraser"></i> Clear Form
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Student Records Card -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h3><i class="fas fa-table"></i> Student Records (Theory)</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>Roll No</th>
+                                        <th>Name</th>
+                                        <th>House Test 1</th>
+                                        <th>House Test 2</th>
+                                        <th>House Test 3</th>
+                                        <th>Assignment</th>
+                                        <th>Seminar</th>
+                                        <th>Total Marks</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>                         
+                                <tbody id="studentsTableBody">
+                                    <!-- Student data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practical Marks Records Card -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h3><i class="fas fa-table"></i> Student Records (Practical)</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>Roll No</th>
+                                        <th>Name</th>
+                                        <th>Practical File</th>
+                                        <th>Viva</th>
+                                        <th>Performance</th>
+                                        <th>Attendance</th>
+                                        <th>Total Marks</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>                         
+                                <tbody id="practicalTableBody">
+                                    <!-- Practical marks data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-</div>
 
+    <!-- Previous HTML content remains the same until the script section -->
 
+    <script>
+        // Previous JavaScript code remains the same until the addStudent function
 
- -->
+        // Add new student
+        function addStudent(e) {
+            e.preventDefault();
+        
+            // Validate required fields
+            const rollNo = document.getElementById('studentRollNo').value;
+            const name = document.getElementById('studentName').value;
+            const semester = document.getElementById('studentSemester').value;
+        
+            if (!rollNo || !name || !semester) {
+                showToast('Please fill all required fields', 'error');
+                return;
+            }
+        
+            // Collect theory marks
+            const theoryMarks = {
+                houseTest1: document.getElementById('houseTest1').value,
+                houseTest2: document.getElementById('houseTest2').value,
+                houseTest3: document.getElementById('houseTest3').value,
+                assignmentMarks: document.getElementById('assignmentMarks').value,
+                seminarMarks: document.getElementById('seminarMarks').value
+            };
+            
+            // Collect practical marks
+            const practicalMarks = {
+                practicalFile: document.getElementById('practicalFile').value,
+                vivaMarks: document.getElementById('vivaMarks').value,
+                performanceMarks: document.getElementById('performanceMarks').value,
+                attendanceMarks: document.getElementById('attendanceMarks').value,
+                totalPracticalMarks: calculatePracticalTotal()
+            };
+        
+            if (!Object.values(theoryMarks).some(val => val) && !Object.values(practicalMarks).some(val => val)) {
+                showToast('Please add at least one mark (theory or practical)', 'error');
+                return;
+            }
+        
+            const student = {
+                rollNo,
+                name,
+                semester,
+                ...theoryMarks,
+                ...practicalMarks,
+                addedDate: new Date().toISOString()
+            };
+        
+            students.push(student);
+            renderStudentsTable();
+            renderPracticalTable();
+            clearStudentForm();
+        
+            showToast('Student record added successfully!');
+        }
+        
+        function calculatePracticalTotal() {
+            const practicalFile = parseFloat(document.getElementById('practicalFile').value) || 0;
+            const vivaMarks = parseFloat(document.getElementById('vivaMarks').value) || 0;
+            const performanceMarks = parseFloat(document.getElementById('performanceMarks').value) || 0;
+            const attendanceMarks = parseFloat(document.getElementById('attendanceMarks').value) || 0;
+            
+            const total = practicalFile + vivaMarks + performanceMarks + attendanceMarks;
+            document.getElementById('totalPracticalMarks').value = total;
+            return total;
+        }
 
+        // Render practical marks table
+        function renderPracticalTable() {
+            const practicalTableBody = document.getElementById('practicalTableBody');
+            practicalTableBody.innerHTML = '';
+        
+            if (students.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="9" style="text-align: center; color: var(--gray);">
+                        No student records found. Add some students to get started.
+                    </td>
+                `;
+                practicalTableBody.appendChild(row);
+                return;
+            }
+        
+            students.forEach((student, index) => {
+                const row = document.createElement('tr');
+        
+                // Helper function to create mark cell with color coding
+                const createMarkCell = (mark) => {
+                    const cell = document.createElement('td');
+                    if (mark) {
+                        const numMark = parseInt(mark);
+                        cell.textContent = numMark;
+                        cell.className = numMark >= 80 ? 'text-success' :
+                            numMark >= 50 ? 'text-warning' : 'text-danger';
+                    } else {
+                        cell.textContent = '-';
+                        cell.className = 'text-muted';
+                    }
+                    return cell;
+                };
+                
+                // Calculate total practical marks
+                const calculatePracticalTotal = () => {
+                    let total = 0;
+                    if (student.practicalFile) total += parseInt(student.practicalFile);
+                    if (student.vivaMarks) total += parseInt(student.vivaMarks);
+                    if (student.performanceMarks) total += parseInt(student.performanceMarks);
+                    if (student.attendanceMarks) total += parseInt(student.attendanceMarks);
+                    return total;
+                };
+                
+                const totalPractical = calculatePracticalTotal();
+                
+                // Create cells for basic info
+                const snCell = document.createElement('td');
+                snCell.textContent = index + 1;
+                row.appendChild(snCell);
+                
+                const rollNoCell = document.createElement('td');
+                rollNoCell.textContent = student.rollNo;
+                row.appendChild(rollNoCell);
+        
+                const nameCell = document.createElement('td');
+                nameCell.textContent = student.name;
+                row.appendChild(nameCell);
+        
+                // Add practical mark cells
+                row.appendChild(createMarkCell(student.practicalFile));
+                row.appendChild(createMarkCell(student.vivaMarks));
+                row.appendChild(createMarkCell(student.performanceMarks));
+                row.appendChild(createMarkCell(student.attendanceMarks));
+                
+                // Add total practical marks cell
+                const totalCell = document.createElement('td');
+                totalCell.textContent = totalPractical;
+                // Apply color coding based on percentage (assuming max possible is 400)
+                const percentage = (totalPractical / 400) * 100;
+                totalCell.className = percentage >= 80 ? 'text-success' :
+                    percentage >= 50 ? 'text-warning' : 'text-danger';
+                row.appendChild(totalCell);
+        
+                // Actions cell
+                const actionsCell = document.createElement('td');
+                actionsCell.innerHTML = `
+                    <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                `;
+                row.appendChild(actionsCell);
+        
+                practicalTableBody.appendChild(row);
+            });
+        }
 
-<!-- 
-Update the marks section to replace theory with three house test inputs:
+        // Edit student - update to handle practical marks
+        function editStudent(index) {
+            const student = students[index];
+        
+            // Fill the form with student data
+            document.getElementById('studentRollNo').value = student.rollNo;
+            document.getElementById('studentName').value = student.name;
+            document.getElementById('studentSemester').value = student.semester || '';
+        
+            // Fill theory marks
+            document.getElementById('houseTest1').value = student.houseTest1 || '';
+            document.getElementById('houseTest2').value = student.houseTest2 || '';
+            document.getElementById('houseTest3').value = student.houseTest3 || '';
+            document.getElementById('assignmentMarks').value = student.assignmentMarks || '';
+            document.getElementById('seminarMarks').value = student.seminarMarks || '';
+            
+            // Fill practical marks
+            document.getElementById('practicalFile').value = student.practicalFile || '';
+            document.getElementById('vivaMarks').value = student.vivaMarks || '';
+            document.getElementById('performanceMarks').value = student.performanceMarks || '';
+            document.getElementById('attendanceMarks').value = student.attendanceMarks || '';
+            document.getElementById('totalPracticalMarks').value = student.totalPracticalMarks || '';
+        
+            // Remove the student from the array (will be re-added when saved)
+            students.splice(index, 1);
+        
+            showToast('Student record loaded for editing', 'success');
+        }
 
-<div class="marks-type-content active" id="theoryMarks">
-    <div class="form-group">
-        <label class="form-label"> Marks </label>
-        <div class="subject-grid">
-            <div class="subject-input-group">
-                <label>1. House Test 1</label>
-                <input type="number" class="form-control" id="houseTest1" placeholder="Marks"
-                    min="0" max="100">
-            </div>
-            <div class="subject-input-group">
-                <label>2. House Test 2</label>
-                <input type="number" class="form-control" id="houseTest2" placeholder="Marks"
-                    min="0" max="100">
-            </div>
-            <div class="subject-input-group">
-                <label>3. House Test 3</label>
-                <input type="number" class="form-control" id="houseTest3" placeholder="Marks"
-                    min="0" max="100">
-            </div>
-            <div class="subject-input-group">
-                <label>4. Assignment</label>
-                <input type="number" class="form-control" id="assignmentMarks" placeholder="Marks"
-                    min="0" max="100">
-            </div>
-            <div class="subject-input-group">
-                <label>5. Seminar</label>
-                <input type="number" class="form-control" id="seminarMarks" placeholder="Marks"
-                    min="0" max="100">
-            </div>
-        </div>
-    </div>
-</div> -->
+        // Clear student form - update to clear practical marks
+        function clearStudentForm() {
+            document.getElementById('studentRollNo').value = '';
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentSemester').value = '';
+        
+            // Clear theory marks fields
+            document.getElementById('houseTest1').value = '';
+            document.getElementById('houseTest2').value = '';
+            document.getElementById('houseTest3').value = '';
+            document.getElementById('assignmentMarks').value = '';
+            document.getElementById('seminarMarks').value = '';
+            
+            // Clear practical marks fields
+            document.getElementById('practicalFile').value = '';
+            document.getElementById('vivaMarks').value = '';
+            document.getElementById('performanceMarks').value = '';
+            document.getElementById('attendanceMarks').value = '';
+            document.getElementById('totalPracticalMarks').value = '';
+        }
 
+        // Initialize the app - update to render both tables
+        function initApp() {
+            loadData();
+            setupEventListeners();
+            updateDashboardStats();
 
-
-<!-- 
-
-Update the student records table header:
-
-<thead>
-    <tr>
-        <th>Roll No</th>
-        <th>Name</th>
-        <th>House Test 1</th>
-        <th>House Test 2</th>
-        <th>House Test 3</th>
-        <th>Assignment</th>
-        <th>Seminar</th>
-        <th>Actions</th>
-    </tr>
-</thead>
- -->
-
-
-<!-- 
-Update the JavaScript functions:
-
-In the addStudent function:
-
-function addStudent(e) {
-    e.preventDefault();
-
-    // Validate required fields
-    const rollNo = document.getElementById('studentRollNo').value;
-    const name = document.getElementById('studentName').value;
-    const semester = document.getElementById('studentSemester').value;
-
-    if (!rollNo || !name || !semester) {
-        showToast('Please fill all required fields', 'error');
-        return;
-    }
-
-    // Collect marks
-    const houseTest1 = document.getElementById('houseTest1').value;
-    const houseTest2 = document.getElementById('houseTest2').value;
-    const houseTest3 = document.getElementById('houseTest3').value;
-    const assignmentMarks = document.getElementById('assignmentMarks').value;
-    const seminarMarks = document.getElementById('seminarMarks').value;
-
-    if (!houseTest1 && !houseTest2 && !houseTest3 && !assignmentMarks && !seminarMarks) {
-        showToast('Please add at least one mark', 'error');
-        return;
-    }
-
-    const student = {
-        rollNo,
-        name,
-        semester,
-        houseTest1,
-        houseTest2,
-        houseTest3,
-        assignmentMarks,
-        seminarMarks,
-        addedDate: new Date().toISOString()
-    };
-
-    students.push(student);
-    renderStudentsTable();
-    clearStudentForm();
-
-    showToast('Student record added successfully!');
-} -->
-
-
-
-
-
-
-
-
-Update the renderStudentsTable function:
-
-<!-- function renderStudentsTable() {
-    studentsTableBody.innerHTML = '';
-
-    if (students.length === 0) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td colspan="8" style="text-align: center; color: var(--gray);">
-                No student records found. Add some students to get started.
-            </td>
-        `;
-        studentsTableBody.appendChild(row);
-        return;
-    }
-
-    students.forEach((student, index) => {
-        const row = document.createElement('tr');
-
-        // Helper function to create mark cell with color coding
-        const createMarkCell = (mark) => {
-            const cell = document.createElement('td');
-            if (mark) {
-                const numMark = parseInt(mark);
-                cell.textContent = numMark;
-                cell.className = numMark >= 80 ? 'text-success' :
-                    numMark >= 50 ? 'text-warning' : 'text-danger';
+            // Check if user is logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                hideAuthModal();
+                updateProfileSection();
             } else {
-                cell.textContent = '-';
-                cell.className = 'text-muted';
+                showAuthModal();
             }
-            return cell;
-        };
+            
+            // Setup marks type tabs
+            const marksTypeTabs = document.querySelectorAll('.marks-type-tab');
+            marksTypeTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    marksTypeTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    document.querySelectorAll('.marks-type-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`${tab.dataset.tab}Marks`).classList.add('active');
+                });
+            });
+            
+            // Setup practical marks calculation
+            const practicalInputs = ['practicalFile', 'vivaMarks', 'performanceMarks', 'attendanceMarks'];
+            practicalInputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', calculatePracticalTotal);
+            });
+            
+            // Render both tables
+            renderStudentsTable();
+            renderPracticalTable();
+        }
 
-        // Create cells for basic info
-        const rollNoCell = document.createElement('td');
-        rollNoCell.textContent = student.rollNo;
-        row.appendChild(rollNoCell);
+        // Previous JavaScript code continues...
+    </script>
 
-        const nameCell = document.createElement('td');
-        nameCell.textContent = student.name;
-        row.appendChild(nameCell);
-
-        // Add mark cells
-        row.appendChild(createMarkCell(student.houseTest1));
-        row.appendChild(createMarkCell(student.houseTest2));
-        row.appendChild(createMarkCell(student.houseTest3));
-        row.appendChild(createMarkCell(student.assignmentMarks));
-        row.appendChild(createMarkCell(student.seminarMarks));
-
-        // Actions cell
-        const actionsCell = document.createElement('td');
-        actionsCell.innerHTML = `
-            <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
-                <i class="fas fa-edit"></i> Edit
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
-                <i class="fas fa-trash"></i> Delete
-            </button>
-        `;
-        row.appendChild(actionsCell);
-
-        studentsTableBody.appendChild(row);
-    });
-} -->
-
-
-
-
-
-
-
-
-
-Update the editStudent function:
-
-function editStudent(index) {
-    const student = students[index];
-
-    // Fill the form with student data
-    document.getElementById('studentRollNo').value = student.rollNo;
-    document.getElementById('studentName').value = student.name;
-    document.getElementById('studentSemester').value = student.semester || '';
-
-    // Fill marks
-    document.getElementById('houseTest1').value = student.houseTest1 || '';
-    document.getElementById('houseTest2').value = student.houseTest2 || '';
-    document.getElementById('houseTest3').value = student.houseTest3 || '';
-    document.getElementById('assignmentMarks').value = student.assignmentMarks || '';
-    document.getElementById('seminarMarks').value = student.seminarMarks || '';
-
-    // Remove the student from the array (will be re-added when saved)
-    students.splice(index, 1);
-
-    showToast('Student record loaded for editing', 'success');
-}
-
-
-
-
-
-
-
-
-<!-- Update the clearStudentForm function:
-
-function clearStudentForm() {
-    document.getElementById('studentRollNo').value = '';
-    document.getElementById('studentName').value = '';
-    document.getElementById('studentSemester').value = '';
-
-    // Clear all marks fields
-    document.getElementById('houseTest1').value = '';
-    document.getElementById('houseTest2').value = '';
-    document.getElementById('houseTest3').value = '';
-    document.getElementById('assignmentMarks').value = '';
-    document.getElementById('seminarMarks').value = '';
-} -->
-
-
-
-
-
-
-
-Update the updateDashboardStats function:
-
-<!-- function updateDashboardStats() {
-    // Total students
-    document.getElementById('totalStudents').textContent = students.length;
-
-    // Average marks
-    if (students.length > 0) {
-        let totalMarks = 0;
-        let count = 0;
-
-        students.forEach(student => {
-            if (student.houseTest1) {
-                totalMarks += parseInt(student.houseTest1);
-                count++;
-            }
-            if (student.houseTest2) {
-                totalMarks += parseInt(student.houseTest2);
-                count++;
-            }
-            if (student.houseTest3) {
-                totalMarks += parseInt(student.houseTest3);
-                count++;
-            }
-            if (student.assignmentMarks) {
-                totalMarks += parseInt(student.assignmentMarks);
-                count++;
-            }
-            if (student.seminarMarks) {
-                totalMarks += parseInt(student.seminarMarks);
-                count++;
-            }
-        });
-
-        const avgMarks = count > 0 ? (totalMarks / count) : 0;
-        document.getElementById('avgMarks').textContent = avgMarks.toFixed(1) + '%';
-    }
-} -->
+</body>
+</html>
