@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+</head>
 <style>
     :root {
         --primary: #4361ee;
@@ -1131,8 +1132,6 @@
         animation: fadeIn 0.3s ease forwards;
     }
 </style>
-    
-</head>
 <body>
     <div class="app-container">
         <!-- Sidebar -->
@@ -1388,12 +1387,7 @@
                 <!-- Student Records Card -->
                 <div class="card fade-in">
                     <div class="card-header">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3><i class="fas fa-table"></i> Student Records (Theory Marks)</h3>
-                            <button class="btn btn-danger" id="downloadPdf">
-                                <i class="fas fa-file-pdf"></i> Download PDF
-                            </button>
-                        </div>
+                        <h3><i class="fas fa-table"></i> Student Records (Theory Marks)</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -1487,7 +1481,6 @@
         const attendanceMarksInput = document.getElementById('attendanceMarks');
         const totalPracticalMarksInput = document.getElementById('totalPracticalMarks');
         const logoutBtn = document.getElementById('logoutBtn');
-        const downloadPdfBtn = document.getElementById('downloadPdf');
 
         function initApp() {
             loadData();
@@ -1516,7 +1509,6 @@
             saveAllDataBtn.addEventListener('click', saveAllStudentData);
             clearFormBtn.addEventListener('click', clearStudentForm);
             logoutBtn.addEventListener('click', logout);
-            downloadPdfBtn.addEventListener('click', downloadPdf);
 
             // Profile dropdown
             userAvatar.addEventListener('click', toggleProfileDropdown);
@@ -1541,83 +1533,6 @@
             [practicalFileInput, vivaMarksInput, performanceMarksInput, attendanceMarksInput].forEach(input => {
                 input.addEventListener('input', calculatePracticalTotal);
             });
-        }
-
-        // Download PDF report
-        function downloadPdf() {
-            if (students.length === 0) {
-                showToast('No student data available to generate PDF', 'error');
-                return;
-            }
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Add title
-            doc.setFontSize(18);
-            doc.text('Student Marks Summary Report', 105, 15, { align: 'center' });
-            
-            // Add date
-            doc.setFontSize(12);
-            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 25, { align: 'center' });
-            
-            // Prepare data for the table
-            const data = students.map((student, index) => {
-                // Calculate total theory marks
-                let theoryTotal = 0;
-                if (student.houseTest1) theoryTotal += parseInt(student.houseTest1);
-                if (student.houseTest2) theoryTotal += parseInt(student.houseTest2);
-                if (student.houseTest3) theoryTotal += parseInt(student.houseTest3);
-                if (student.assignmentMarks) theoryTotal += parseInt(student.assignmentMarks);
-                if (student.seminarMarks) theoryTotal += parseInt(student.seminarMarks);
-                
-                // Calculate total practical marks
-                let practicalTotal = 0;
-                if (student.practicalFile) practicalTotal += parseInt(student.practicalFile);
-                if (student.vivaMarks) practicalTotal += parseInt(student.vivaMarks);
-                if (student.performanceMarks) practicalTotal += parseInt(student.performanceMarks);
-                if (student.attendanceMarks) practicalTotal += parseInt(student.attendanceMarks);
-                
-                return [
-                    index + 1,
-                    student.rollNo,
-                    student.name,
-                    theoryTotal,
-                    practicalTotal
-                ];
-            });
-            
-            // Add table
-            doc.autoTable({
-                head: [['S/N', 'Roll No', 'Name', 'Theory Marks', 'Practical Marks']],
-                body: data,
-                startY: 30,
-                styles: {
-                    fontSize: 10,
-                    cellPadding: 3,
-                    valign: 'middle',
-                    halign: 'center'
-                },
-                headStyles: {
-                    fillColor: [41, 128, 185],
-                    textColor: 255,
-                    fontStyle: 'bold'
-                },
-                alternateRowStyles: {
-                    fillColor: [245, 245, 245]
-                },
-                columnStyles: {
-                    0: { cellWidth: 15 },
-                    1: { cellWidth: 30 },
-                    2: { cellWidth: 50 },
-                    3: { cellWidth: 30 },
-                    4: { cellWidth: 30 }
-                }
-            });
-            
-            // Save the PDF
-            doc.save('student_marks_summary.pdf');
-            showToast('PDF report downloaded successfully!');
         }
 
         // Switch between theory and practical marks tabs
@@ -2092,15 +2007,16 @@
                 document.getElementById('avgMarks').textContent = avgMarks.toFixed(1) + '%';
             }
         }
-    // Initialize the app when DOM is loaded
-    document.addEventListener('DOMContentLoaded', initApp);
 
-    // Make functions available globally for inline event handlers
-    window.editStudent = editStudent;
-    window.deleteStudent = deleteStudent;
-    window.navigateToSection = navigateToSection;
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
 
-</script>
+        // Make functions available globally for inline event handlers
+        window.editStudent = editStudent;
+        window.deleteStudent = deleteStudent;
+        window.navigateToSection = navigateToSection;
+
+    </script>
 
 </body>
 
