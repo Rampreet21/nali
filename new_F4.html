@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sessional Marks - Teacher Portal</title>
-    <link rel="website icon" href="/logo1.png" type="png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -1224,14 +1223,218 @@
                 </div>
             </div>
 
+            <div class="section-content" id="studentsSection">
+                <!-- Student Management Card -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-graduate"></i> Student Marks Management</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="studentForm">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="studentRollNo">Roll Number</label>
+                                        <input type="text" class="form-control" id="studentRollNo" placeholder="Enter roll number" required>
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="studentName">Student Name</label>
+                                        <input type="text" class="form-control" id="studentName" placeholder="Enter student name" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="studentDepartment">Department</label>
+                                        <select class="form-control" id="studentDepartment" required>
+                                            <option value="">Select Department</option>
+                                            <option value="Computer Science">Computer Science Engineering</option>
+                                            <option value="Electrical Engineering">Electrical Engineering</option>
+                                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                            <option value="Civil Engineering">Civil Engineering</option>
+                                            <option value="Pharmacy">Pharmacy</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="studentSemester">Semester</label>
+                                        <select class="form-control" id="studentSemester" required>
+                                            <option value="">Select Semester</option>
+                                            <option value="1">1st Semester</option>
+                                            <option value="2">2nd Semester</option>
+                                            <option value="3">3rd Semester</option>
+                                            <option value="4">4th Semester</option>
+                                            <option value="5">5th Semester</option>
+                                            <option value="6">6th Semester</option>
+                                        </select>
+                                    </div>
+                                </div>
 
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="studentSubject">Subject</label>
+                                        <select class="form-control" id="studentSubject" required>
+                                            <option value="">Select Subject</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Marks Type Tabs -->
+                            <div class="marks-type-tabs">
+                                <div class="marks-type-tab active" data-tab="theoryMarks">
+                                    <i class="fas fa-book"></i> Theory Marks
+                                </div>
+                                <div class="marks-type-tab" data-tab="practicalMarks">
+                                    <i class="fas fa-laptop-code"></i> Practical Marks
+                                </div>
+                            </div>
 
+                            <!-- Theory Marks Section -->
+                            <div class="marks-type-content active" id="theoryMarks">
+                                <div class="form-group">
+                                    <label class="form-label">Theory Marks</label>
+                                    <div class="subject-grid">
+                                        <div class="subject-input-group">
+                                            <label>1. House Test 1</label>
+                                            <input type="number" class="form-control" id="houseTest1" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>2. House Test 2</label>
+                                            <input type="number" class="form-control" id="houseTest2" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>3. House Test 3</label>
+                                            <input type="number" class="form-control" id="houseTest3" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>4. Assignment</label>
+                                            <input type="number" class="form-control" id="assignmentMarks" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>5. Seminar</label>
+                                            <input type="number" class="form-control" id="seminarMarks" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Practical Marks Section -->
+                            <div class="marks-type-content" id="practicalMarks">
+                                <div class="form-group">
+                                    <label class="form-label">Practical Marks</label>
+                                    <div class="subject-grid">
+                                        <div class="subject-input-group">
+                                            <label>1. Practical File</label>
+                                            <input type="number" class="form-control" id="practicalFile" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>2. Viva</label>
+                                            <input type="number" class="form-control" id="vivaMarks" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>3. Performance</label>
+                                            <input type="number" class="form-control" id="performanceMarks" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>4. Attendance</label>
+                                            <input type="number" class="form-control" id="attendanceMarks" placeholder="Marks" min="0" max="100">
+                                        </div>
+                                        <div class="subject-input-group">
+                                            <label>5. Total Practical Marks</label>
+                                            <input type="number" class="form-control" id="totalPracticalMarks" placeholder="Marks" min="0" max="100" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add Student
+                                </button>
+                                <button type="button" class="btn btn-success" id="saveAllData">
+                                    <i class="fas fa-save"></i> Save All Data
+                                </button>
+                                <button type="button" class="btn btn-warning" id="clearForm">
+                                    <i class="fas fa-eraser"></i> Clear Form
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-danger" id="downloadPdf">
+                    <i class="fas fa-file-pdf"></i> Download PDF Report
+                </button>
 
+                <!-- Student Records Card -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h3><i class="fas fa-table"></i> Student Records (Theory Marks)</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>Roll No</th>
+                                        <th>Name</th>
+                                        <th>Subject</th>
+                                        <th>House Test 1</th>
+                                        <th>House Test 2</th>
+                                        <th>House Test 3</th>
+                                        <th>Assignment</th>
+                                        <th>Seminar</th>
+                                        <th>Total Marks</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentsTableBody">
+                                    <!-- Student data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-            
+                <!-- Practical Marks Records Card -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h3><i class="fas fa-laptop-code"></i> Student Records (Practical Marks)</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>Roll No</th>
+                                        <th>Name</th>
+                                        <th>Subject</th>
+                                        <th>Practical File</th>
+                                        <th>Viva</th>
+                                        <th>Performance</th>
+                                        <th>Attendance</th>
+                                        <th>Total Marks</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="practicalTableBody">
+                                    <!-- Practical marks data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
@@ -1288,22 +1491,22 @@
             }
         };
 
-         //DOM elements
+        // DOM elements
         const studentForm = document.getElementById('studentForm');
         const saveAllDataBtn = document.getElementById('saveAllData');
-       const clearFormBtn = document.getElementById('clearForm');
-    const studentsTableBody = document.getElementById('studentsTableBody');
-       const practicalTableBody = document.getElementById('practicalTableBody');
-      const userAvatar = document.getElementById('userAvatar');
-       const profileAvatar = document.getElementById('profileAvatar');
-      const profileName = document.getElementById('profileName');
-       const profileEmail = document.getElementById('profileEmail');
-       const profileDropdown = document.getElementById('profileDropdown');
-      const toastContainer = document.getElementById('toastContainer');
-       const menuItems = document.querySelectorAll('.menu-item');
-       const sectionContents = document.querySelectorAll('.section-content');
-       const pageTitle = document.getElementById('pageTitle');
-const teacherGreeting = document.getElementById('teacherGreeting');
+        const clearFormBtn = document.getElementById('clearForm');
+        const studentsTableBody = document.getElementById('studentsTableBody');
+        const practicalTableBody = document.getElementById('practicalTableBody');
+        const userAvatar = document.getElementById('userAvatar');
+        const profileAvatar = document.getElementById('profileAvatar');
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const toastContainer = document.getElementById('toastContainer');
+        const menuItems = document.querySelectorAll('.menu-item');
+        const sectionContents = document.querySelectorAll('.section-content');
+        const pageTitle = document.getElementById('pageTitle');
+        const teacherGreeting = document.getElementById('teacherGreeting');
         const marksTypeTabs = document.querySelectorAll('.marks-type-tab');
         const marksTypeContents = document.querySelectorAll('.marks-type-content');
         const practicalFileInput = document.getElementById('practicalFile');
@@ -1312,7 +1515,7 @@ const teacherGreeting = document.getElementById('teacherGreeting');
         const attendanceMarksInput = document.getElementById('attendanceMarks');
         const totalPracticalMarksInput = document.getElementById('totalPracticalMarks');
         const logoutBtn = document.getElementById('logoutBtn');
-    const studentSemesterSelect = document.getElementById('studentSemester');
+        const studentSemesterSelect = document.getElementById('studentSemester');
         const studentSubjectSelect = document.getElementById('studentSubject');
         const studentDepartmentSelect = document.getElementById('studentDepartment');
         const downloadPdfBtn = document.getElementById('downloadPdf');
@@ -1339,12 +1542,47 @@ const teacherGreeting = document.getElementById('teacherGreeting');
             }
         }
 
-         
+        // Update semester options based on selected department
+        function updateSemesterOptions() {
+            const department = studentDepartmentSelect.value;
+            studentSemesterSelect.innerHTML = '<option value="">Select Semester</option>';
+            
+            if (department) {
+                for (let i = 1; i <= 6; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `${i}${getOrdinalSuffix(i)} Semester`;
+                    studentSemesterSelect.appendChild(option);
+                }
+            }
+            studentSubjectSelect.innerHTML = '<option value="">Select Subject</option>';
+        }
 
+        // Helper function to get ordinal suffix
+        function getOrdinalSuffix(i) {
+            const j = i % 10, k = i % 100;
+            if (j === 1 && k !== 11) return 'st';
+            if (j === 2 && k !== 12) return 'nd';
+            if (j === 3 && k !== 13) return 'rd';
+            return 'th';
+        }
 
-                    
-        
-        
+        // Update subject options based on selected semester and department
+        function updateSubjectOptions() {
+            const semester = studentSemesterSelect.value;
+            const department = studentDepartmentSelect.value;
+            studentSubjectSelect.innerHTML = '<option value="">Select Subject</option>';
+            
+            if (semester && department && departmentSubjects[department] && departmentSubjects[department][semester]) {
+                departmentSubjects[department][semester].forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    studentSubjectSelect.appendChild(option);
+                });
+            }
+        }
+
         // Set up event listeners
         function setupEventListeners() {
             // Student form
@@ -1376,7 +1614,7 @@ const teacherGreeting = document.getElementById('teacherGreeting');
                     switchMarksTab(tabId);
                 });
             });
-            
+
             // Practical marks calculation
             [practicalFileInput, vivaMarksInput, performanceMarksInput, attendanceMarksInput].forEach(input => {
                 input.addEventListener('input', calculatePracticalTotal);
@@ -1418,18 +1656,184 @@ const teacherGreeting = document.getElementById('teacherGreeting');
             teacherGreeting.textContent = "Teacher";
         }
 
+        // Add new student
+        function addStudent() {
+            // Validate required fields
+            const rollNo = document.getElementById('studentRollNo').value.trim();
+            const name = document.getElementById('studentName').value.trim();
+            const semester = document.getElementById('studentSemester').value;
+            const department = document.getElementById('studentDepartment').value;
+            const subject = document.getElementById('studentSubject').value;
         
-
-
-
-
-
+            if (!rollNo || !name || !semester || !department || !subject) {
+                showToast('Please fill all required fields', 'error');
+                return;
+            }
         
+            // Collect marks
+            const marks = {
+                rollNo,
+                name,
+                semester,
+                department,
+                subject,
+                houseTest1: document.getElementById('houseTest1').value || '0',
+                houseTest2: document.getElementById('houseTest2').value || '0',
+                houseTest3: document.getElementById('houseTest3').value || '0',
+                assignmentMarks: document.getElementById('assignmentMarks').value || '0',
+                seminarMarks: document.getElementById('seminarMarks').value || '0',
+                practicalFile: document.getElementById('practicalFile').value || '0',
+                vivaMarks: document.getElementById('vivaMarks').value || '0',
+                performanceMarks: document.getElementById('performanceMarks').value || '0',
+                attendanceMarks: document.getElementById('attendanceMarks').value || '0',
+                totalPracticalMarks: document.getElementById('totalPracticalMarks').value || '0',
+                addedDate: new Date().toISOString()
+            };
+        
+            // Check if at least one mark is provided
+            const hasTheoryMarks = marks.houseTest1 !== '0' || marks.houseTest2 !== '0' || marks.houseTest3 !== '0' || 
+                                  marks.assignmentMarks !== '0' || marks.seminarMarks !== '0';
+            const hasPracticalMarks = marks.practicalFile !== '0' || marks.vivaMarks !== '0' || 
+                                     marks.performanceMarks !== '0' || marks.attendanceMarks !== '0';
+            
+            if (!hasTheoryMarks && !hasPracticalMarks) {
+                showToast('Please add at least one mark (theory or practical)', 'error');
+                return;
+            }
+        
+            students.push(marks);
+            renderStudentsTable();
+            renderPracticalTable();
+            clearStudentForm();
+            updateDashboardStats();
+            saveAllStudentData();
+            
+            showToast('Student record added successfully!', 'success');
+        }
 
+        // Render students table (theory marks)
+        function renderStudentsTable() {
+            studentsTableBody.innerHTML = '';
+        
+            if (students.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="11" style="text-align: center;">
+                        No student records found. Add some students to get started.
+                    </td>
+                `;
+                studentsTableBody.appendChild(row);
+                return;
+            }
+        
+            students.forEach((student, index) => {
+                // Skip if student has no theory marks
+                if (student.houseTest1 === '0' && student.houseTest2 === '0' && student.houseTest3 === '0' && 
+                    student.assignmentMarks === '0' && student.seminarMarks === '0') {
+                    return;
+                }
+                
+                const row = document.createElement('tr');
+        
+                // Helper function to create mark cell
+                const createMarkCell = (mark) => {
+                    const cell = document.createElement('td');
+                    const numMark = parseInt(mark);
+                    cell.textContent = numMark > 0 ? numMark : '-';
+                    return cell;
+                };
+                
+                // Calculate total theory marks
+                const totalMarks = [
+                    parseInt(student.houseTest1),
+                    parseInt(student.houseTest2),
+                    parseInt(student.houseTest3),
+                    parseInt(student.assignmentMarks),
+                    parseInt(student.seminarMarks)
+                ].reduce((sum, mark) => sum + mark, 0);
+                
+                // Create cells
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${student.rollNo}</td>
+                    <td>${student.name}</td>
+                    <td>${student.subject}</td>
+                    <td>${student.houseTest1 !== '0' ? student.houseTest1 : '-'}</td>
+                    <td>${student.houseTest2 !== '0' ? student.houseTest2 : '-'}</td>
+                    <td>${student.houseTest3 !== '0' ? student.houseTest3 : '-'}</td>
+                    <td>${student.assignmentMarks !== '0' ? student.assignmentMarks : '-'}</td>
+                    <td>${student.seminarMarks !== '0' ? student.seminarMarks : '-'}</td>
+                    <td>${totalMarks}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+        
+                studentsTableBody.appendChild(row);
+            });
+        }
 
-
-
-
+        // Render practical marks table
+        function renderPracticalTable() {
+            practicalTableBody.innerHTML = '';
+        
+            if (students.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="10" style="text-align: center;">
+                        No practical marks records found. Add some students to get started.
+                    </td>
+                `;
+                practicalTableBody.appendChild(row);
+                return;
+            }
+        
+            students.forEach((student, index) => {
+                // Skip if student has no practical marks
+                if (student.practicalFile === '0' && student.vivaMarks === '0' && 
+                    student.performanceMarks === '0' && student.attendanceMarks === '0') {
+                    return;
+                }
+                
+                const row = document.createElement('tr');
+                
+                // Calculate total practical marks
+                const totalPracticalMarks = [
+                    parseInt(student.practicalFile),
+                    parseInt(student.vivaMarks),
+                    parseInt(student.performanceMarks),
+                    parseInt(student.attendanceMarks)
+                ].reduce((sum, mark) => sum + mark, 0);
+                
+                // Create cells
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${student.rollNo}</td>
+                    <td>${student.name}</td>
+                    <td>${student.subject}</td>
+                    <td>${student.practicalFile !== '0' ? student.practicalFile : '-'}</td>
+                    <td>${student.vivaMarks !== '0' ? student.vivaMarks : '-'}</td>
+                    <td>${student.performanceMarks !== '0' ? student.performanceMarks : '-'}</td>
+                    <td>${student.attendanceMarks !== '0' ? student.attendanceMarks : '-'}</td>
+                    <td>${totalPracticalMarks}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editStudent(${index})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+        
+                practicalTableBody.appendChild(row);
+            });
+        }
 
         // Edit student
         function editStudent(index) {
@@ -1593,8 +1997,87 @@ const teacherGreeting = document.getElementById('teacherGreeting');
                 document.getElementById('avgMarks').textContent = avgMarks.toFixed(1) + '%';
             }
         }
-   
 
+
+        
+// Generate PDF report
+function generatePdfReport() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Add title
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.text('Sessional Marks Report', 105, 15, { align: 'center' });
+    
+    // Add date
+    doc.setFontSize(10);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 22, { align: 'center' });
+    
+    // Prepare data for the table
+    const reportData = students.map((student, index) => {
+        // Calculate total theory marks
+        const theoryTotal = [
+            student.houseTest1,
+            student.houseTest2,
+            student.houseTest3,
+            student.assignmentMarks,
+            student.seminarMarks
+        ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
+        
+        // Calculate total practical marks
+        const practicalTotal = [
+            student.practicalFile,
+            student.vivaMarks,
+            student.performanceMarks,
+            student.attendanceMarks
+        ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
+        
+        return [
+            index + 1,
+            student.rollNo,
+            student.name,
+            theoryTotal,
+            practicalTotal
+        ];
+    });
+    
+    // Add table
+    doc.autoTable({
+        head: [['S.No', 'Roll No', 'Name', 'Total Theory', 'Total Practical']],
+        body: reportData,
+        startY: 30,
+        styles: {
+            fontSize: 10,
+            cellPadding: 2,
+            valign: 'middle'
+        },
+        headStyles: {
+            fillColor: [41, 128, 185],
+            textColor: 255,
+            fontStyle: 'bold'
+        },
+        alternateRowStyles: {
+            fillColor: [245, 245, 245]
+        },
+        columnStyles: {
+            0: { cellWidth: 15 }, // S.No
+            1: { cellWidth: 25 }, // Roll No
+            2: { cellWidth: 50 }, // Name
+            3: { cellWidth: 30 }, // Theory
+            4: { cellWidth: 30 }  // Practical
+        },
+        didDrawPage: function (data) {
+            // Footer
+            doc.setFontSize(10);
+            doc.setTextColor(150);
+            doc.text('Sessional Marks Management System', data.settings.margin.left, doc.internal.pageSize.height - 10);
+        }
+    });
+    
+    // Save the PDF
+    doc.save(`Sessional_Marks_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+}
 
 // Add event listener for the PDF button in setupEventListeners()
 document.getElementById('downloadPdf').addEventListener('click', generatePdfReport);
@@ -1603,128 +2086,84 @@ document.getElementById('downloadPdf').addEventListener('click', generatePdfRepo
 // Inside your existing setupEventListeners() function, add:
 document.getElementById('downloadPdf').addEventListener('click', generatePdfReport);
 
-
-
-
-
-
-    // Generate PDF report
-    function generatePdfReport() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        // Add title
-        doc.setFontSize(18);
-        doc.setTextColor(40);
-        doc.text('Sessional Marks Report', 105, 15, { align: 'center' });
-        
-        // Get department and semester (from form or first student)
-        let department = document.getElementById('studentDepartment').value;
-        let semester = document.getElementById('studentSemester').value;
-        
-        // If not selected in form, try to get from first student
-        if (!department && students.length > 0) {
-            department = students[0].department;
-        }
-        if (!semester && students.length > 0) {
-            semester = students[0].semester;
-        }
-        
-        // Add department/semester info if available
-        doc.setFontSize(12);
-        if (department) {
-            doc.text(`Department: ${department}`, 105, 22, { align: 'center' });
-        }
-        if (semester) {
-            doc.text(`Semester: ${semester}${getOrdinalSuffix(semester)} Semester`, 105, 28, { align: 'center' });
-        }
-        
-        // Add date
-        doc.setFontSize(10);
-        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 34, { align: 'center' });
-        
-        // Prepare data for the table
-        const reportData = students.map((student, index) => {
-            // Calculate total theory marks
-            const theoryTotal = [
-                student.houseTest1,
-                student.houseTest2,
-                student.houseTest3,
-                student.assignmentMarks,
-                student.seminarMarks
-            ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
-            
-            // Calculate total practical marks
-            const practicalTotal = [
-                student.practicalFile,
-                student.vivaMarks,
-                student.performanceMarks,
-                student.attendanceMarks
-            ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
-            
-            return [
-                index + 1,
-                student.rollNo,
-                student.name,
-                student.subject,
-                theoryTotal,
-                practicalTotal,
-                theoryTotal + practicalTotal
-            ];
-        });
-        
-        // Add table
-        doc.autoTable({
-            head: [['S.No', 'Roll No', 'Name', 'Subject', 'Theory', 'Practical', 'Total']],
-            body: reportData,
-            startY: 40,
-            styles: {
-                fontSize: 9,
-                cellPadding: 2,
-                valign: 'middle'
-            },
-            headStyles: {
-                fillColor: [41, 128, 185],
-                textColor: 255,
-                fontStyle: 'bold'
-            },
-            alternateRowStyles: {
-                fillColor: [245, 245, 245]
-            },
-            columnStyles: {
-                0: { cellWidth: 10 }, // S.No
-                1: { cellWidth: 20 }, // Roll No
-                2: { cellWidth: 35 }, // Name
-                3: { cellWidth: 40 }, // Subject
-                4: { cellWidth: 20 }, // Theory
-                5: { cellWidth: 20 }, // Practical
-                6: { cellWidth: 20 }  // Total
-            },
-            didDrawPage: function (data) {
-                // Footer
-                doc.setFontSize(10);
-                doc.setTextColor(150);
-                doc.text('Sessional Marks Management System', data.settings.margin.left, doc.internal.pageSize.height - 10);
-            }
-        });
-        
-        // Save the PDF
-        doc.save(`Sessional_Marks_Report_${new Date().toISOString().slice(0,10)}.pdf`);
-    }
+// Add this new function anywhere in your script:
+function generatePdfReport() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
     
-    // Helper function to get ordinal suffix
-    function getOrdinalSuffix(i) {
-        i = parseInt(i);
-        const j = i % 10, k = i % 100;
-        if (j === 1 && k !== 11) return 'st';
-        if (j === 2 && k !== 12) return 'nd';
-        if (j === 3 && k !== 13) return 'rd';
-        return 'th';
-    }
-
-
-
-
+    // Add title
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.text('Sessional Marks Report', 105, 15, { align: 'center' });
+    
+    // Add date
+    doc.setFontSize(10);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 22, { align: 'center' });
+    
+    // Prepare data for the table
+    const reportData = students.map((student, index) => {
+        // Calculate total theory marks
+        const theoryTotal = [
+            student.houseTest1,
+            student.houseTest2,
+            student.houseTest3,
+            student.assignmentMarks,
+            student.seminarMarks
+        ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
+        
+        // Calculate total practical marks
+        const practicalTotal = [
+            student.practicalFile,
+            student.vivaMarks,
+            student.performanceMarks,
+            student.attendanceMarks
+        ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
+        
+        return [
+            index + 1,
+            student.rollNo,
+            student.name,
+            theoryTotal,
+            practicalTotal
+        ];
+    });
+    
+    // Add table
+    doc.autoTable({
+        head: [['S.No', 'Roll No', 'Name', 'Total Theory', 'Total Practical']],
+        body: reportData,
+        startY: 30,
+        styles: {
+            fontSize: 10,
+            cellPadding: 2,
+            valign: 'middle'
+        },
+        headStyles: {
+            fillColor: [41, 128, 185],
+            textColor: 255,
+            fontStyle: 'bold'
+        },
+        alternateRowStyles: {
+            fillColor: [245, 245, 245]
+        },
+        columnStyles: {
+            0: { cellWidth: 15 }, // S.No
+            1: { cellWidth: 25 }, // Roll No
+            2: { cellWidth: 50 }, // Name
+            3: { cellWidth: 30 }, // Theory
+            4: { cellWidth: 30 }  // Practical
+        },
+        didDrawPage: function (data) {
+            // Footer
+            doc.setFontSize(10);
+            doc.setTextColor(150);
+            doc.text('Sessional Marks Management System', data.settings.margin.left, doc.internal.pageSize.height - 10);
+        }
+    });
+    
+    // Save the PDF
+    doc.save(`Sessional_Marks_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+}
 
 
         // Initialize the app when DOM is loaded

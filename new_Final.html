@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sessional Marks - Teacher Portal</title>
+    <link rel="website icon" href="/logo1.png" type="png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -1997,87 +1998,8 @@
                 document.getElementById('avgMarks').textContent = avgMarks.toFixed(1) + '%';
             }
         }
+   
 
-
-        
-// Generate PDF report
-function generatePdfReport() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // Add title
-    doc.setFontSize(18);
-    doc.setTextColor(40);
-    doc.text('Sessional Marks Report', 105, 15, { align: 'center' });
-    
-    // Add date
-    doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 22, { align: 'center' });
-    
-    // Prepare data for the table
-    const reportData = students.map((student, index) => {
-        // Calculate total theory marks
-        const theoryTotal = [
-            student.houseTest1,
-            student.houseTest2,
-            student.houseTest3,
-            student.assignmentMarks,
-            student.seminarMarks
-        ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
-        
-        // Calculate total practical marks
-        const practicalTotal = [
-            student.practicalFile,
-            student.vivaMarks,
-            student.performanceMarks,
-            student.attendanceMarks
-        ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
-        
-        return [
-            index + 1,
-            student.rollNo,
-            student.name,
-            theoryTotal,
-            practicalTotal
-        ];
-    });
-    
-    // Add table
-    doc.autoTable({
-        head: [['S.No', 'Roll No', 'Name', 'Total Theory', 'Total Practical']],
-        body: reportData,
-        startY: 30,
-        styles: {
-            fontSize: 10,
-            cellPadding: 2,
-            valign: 'middle'
-        },
-        headStyles: {
-            fillColor: [41, 128, 185],
-            textColor: 255,
-            fontStyle: 'bold'
-        },
-        alternateRowStyles: {
-            fillColor: [245, 245, 245]
-        },
-        columnStyles: {
-            0: { cellWidth: 15 }, // S.No
-            1: { cellWidth: 25 }, // Roll No
-            2: { cellWidth: 50 }, // Name
-            3: { cellWidth: 30 }, // Theory
-            4: { cellWidth: 30 }  // Practical
-        },
-        didDrawPage: function (data) {
-            // Footer
-            doc.setFontSize(10);
-            doc.setTextColor(150);
-            doc.text('Sessional Marks Management System', data.settings.margin.left, doc.internal.pageSize.height - 10);
-        }
-    });
-    
-    // Save the PDF
-    doc.save(`Sessional_Marks_Report_${new Date().toISOString().slice(0,10)}.pdf`);
-}
 
 // Add event listener for the PDF button in setupEventListeners()
 document.getElementById('downloadPdf').addEventListener('click', generatePdfReport);
@@ -2086,84 +2008,128 @@ document.getElementById('downloadPdf').addEventListener('click', generatePdfRepo
 // Inside your existing setupEventListeners() function, add:
 document.getElementById('downloadPdf').addEventListener('click', generatePdfReport);
 
-// Add this new function anywhere in your script:
-function generatePdfReport() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // Add title
-    doc.setFontSize(18);
-    doc.setTextColor(40);
-    doc.text('Sessional Marks Report', 105, 15, { align: 'center' });
-    
-    // Add date
-    doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 22, { align: 'center' });
-    
-    // Prepare data for the table
-    const reportData = students.map((student, index) => {
-        // Calculate total theory marks
-        const theoryTotal = [
-            student.houseTest1,
-            student.houseTest2,
-            student.houseTest3,
-            student.assignmentMarks,
-            student.seminarMarks
-        ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
+
+
+
+
+
+    // Generate PDF report
+    function generatePdfReport() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
         
-        // Calculate total practical marks
-        const practicalTotal = [
-            student.practicalFile,
-            student.vivaMarks,
-            student.performanceMarks,
-            student.attendanceMarks
-        ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
+        // Add title
+        doc.setFontSize(18);
+        doc.setTextColor(40);
+        doc.text('Sessional Marks Report', 105, 15, { align: 'center' });
         
-        return [
-            index + 1,
-            student.rollNo,
-            student.name,
-            theoryTotal,
-            practicalTotal
-        ];
-    });
-    
-    // Add table
-    doc.autoTable({
-        head: [['S.No', 'Roll No', 'Name', 'Total Theory', 'Total Practical']],
-        body: reportData,
-        startY: 30,
-        styles: {
-            fontSize: 10,
-            cellPadding: 2,
-            valign: 'middle'
-        },
-        headStyles: {
-            fillColor: [41, 128, 185],
-            textColor: 255,
-            fontStyle: 'bold'
-        },
-        alternateRowStyles: {
-            fillColor: [245, 245, 245]
-        },
-        columnStyles: {
-            0: { cellWidth: 15 }, // S.No
-            1: { cellWidth: 25 }, // Roll No
-            2: { cellWidth: 50 }, // Name
-            3: { cellWidth: 30 }, // Theory
-            4: { cellWidth: 30 }  // Practical
-        },
-        didDrawPage: function (data) {
-            // Footer
-            doc.setFontSize(10);
-            doc.setTextColor(150);
-            doc.text('Sessional Marks Management System', data.settings.margin.left, doc.internal.pageSize.height - 10);
+        // Get department and semester (from form or first student)
+        let department = document.getElementById('studentDepartment').value;
+        let semester = document.getElementById('studentSemester').value;
+        
+        // If not selected in form, try to get from first student
+        if (!department && students.length > 0) {
+            department = students[0].department;
         }
-    });
+        if (!semester && students.length > 0) {
+            semester = students[0].semester;
+        }
+        
+        // Add department/semester info if available
+        doc.setFontSize(12);
+        if (department) {
+            doc.text(`Department: ${department}`, 105, 22, { align: 'center' });
+        }
+        if (semester) {
+            doc.text(`Semester: ${semester}${getOrdinalSuffix(semester)} Semester`, 105, 28, { align: 'center' });
+        }
+        
+        // Add date
+        doc.setFontSize(10);
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 34, { align: 'center' });
+        
+        // Prepare data for the table
+        const reportData = students.map((student, index) => {
+            // Calculate total theory marks
+            const theoryTotal = [
+                student.houseTest1,
+                student.houseTest2,
+                student.houseTest3,
+                student.assignmentMarks,
+                student.seminarMarks
+            ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
+            
+            // Calculate total practical marks
+            const practicalTotal = [
+                student.practicalFile,
+                student.vivaMarks,
+                student.performanceMarks,
+                student.attendanceMarks
+            ].reduce((sum, mark) => sum + (parseInt(mark) || 0), 0);
+            
+            return [
+                index + 1,
+                student.rollNo,
+                student.name,
+                student.subject,
+                theoryTotal,
+                practicalTotal,
+                theoryTotal + practicalTotal
+            ];
+        });
+        
+        // Add table
+        doc.autoTable({
+            head: [['S.No', 'Roll No', 'Name', 'Subject', 'Theory', 'Practical', 'Total']],
+            body: reportData,
+            startY: 40,
+            styles: {
+                fontSize: 9,
+                cellPadding: 2,
+                valign: 'middle'
+            },
+            headStyles: {
+                fillColor: [41, 128, 185],
+                textColor: 255,
+                fontStyle: 'bold'
+            },
+            alternateRowStyles: {
+                fillColor: [245, 245, 245]
+            },
+            columnStyles: {
+                0: { cellWidth: 10 }, // S.No
+                1: { cellWidth: 20 }, // Roll No
+                2: { cellWidth: 35 }, // Name
+                3: { cellWidth: 40 }, // Subject
+                4: { cellWidth: 20 }, // Theory
+                5: { cellWidth: 20 }, // Practical
+                6: { cellWidth: 20 }  // Total
+            },
+            didDrawPage: function (data) {
+                // Footer
+                doc.setFontSize(10);
+                doc.setTextColor(150);
+                doc.text('Sessional Marks Management System', data.settings.margin.left, doc.internal.pageSize.height - 10);
+            }
+        });
+        
+        // Save the PDF
+        doc.save(`Sessional_Marks_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+    }
     
-    // Save the PDF
-    doc.save(`Sessional_Marks_Report_${new Date().toISOString().slice(0,10)}.pdf`);
-}
+    // Helper function to get ordinal suffix
+    function getOrdinalSuffix(i) {
+        i = parseInt(i);
+        const j = i % 10, k = i % 100;
+        if (j === 1 && k !== 11) return 'st';
+        if (j === 2 && k !== 12) return 'nd';
+        if (j === 3 && k !== 13) return 'rd';
+        return 'th';
+    }
+
+
+
+
 
 
         // Initialize the app when DOM is loaded
