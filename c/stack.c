@@ -1,40 +1,62 @@
+// insertion / deletion double linked list
+
 #include <stdio.h>
-#include <ctype.h>
+#include <stdlib.h>
 
-char stack[100];
-int top = -1;
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
 
-void push(char c) { stack[++top] = c; }
-char pop() { return stack[top--]; }
-int priority(char c) { 
-    if (c == '+' || c == '-') return 1;
-    if (c == '*' || c == '/') return 2;
-    return 0;
+// Insert at beginning
+void insertAtBeginning(struct Node** head, int newData) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = newData;
+    newNode->prev = NULL;
+    newNode->next = *head;
+    if (*head != NULL)
+        (*head)->prev = newNode;
+    *head = newNode;
+}
+
+// Delete first node
+void deleteFirst(struct Node** head) {
+    if (*head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    struct Node* temp = *head;
+    *head = (*head)->next;
+    if (*head != NULL)
+        (*head)->prev = NULL;
+    free(temp);
+}
+
+// Display list
+void display(struct Node* node) {
+    printf("Doubly Linked List: ");
+    while (node != NULL) {
+        printf("%d <-> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
 }
 
 int main() {
-    char infix[100], ch;
-    int i = 0;
-    printf("Enter infix: ");
-    scanf("%s", infix);
+    struct Node* head = NULL;
 
-    while ((ch = infix[i++]) != '\0') {
-        if (isalnum(ch)) printf("%c", ch);
-        else if (ch == '(') push(ch);
-        else if (ch == ')') {
-            while (stack[top] != '(') printf("%c", pop());
-            pop();
-        } else {
-            while (top != -1 && priority(stack[top]) >= priority(ch))
-                printf("%c", pop());
-            push(ch);
-        }
-    }
-    while (top != -1) printf("%c", pop());
+    insertAtBeginning(&head, 30);
+    insertAtBeginning(&head, 20);
+    insertAtBeginning(&head, 10);
+    display(head);
+
+    deleteFirst(&head);
+    display(head);
+
     return 0;
 }
 
-// output:
-
-// Input:  (A+B)*C
-// Output: AB+C*
+// Output:
+// Doubly Linked List: 10 <-> 20 <-> 30 <-> NULL
+// Doubly Linked List: 20 <-> 30 <-> NULL
